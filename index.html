@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>C# Forms generator</title>
+    <meta property="og:title" content="C# Forms generator" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6 {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <script src="./code.js"></script>
+  <body>
+    <div>
+      <link href="./index.css" rel="stylesheet" />
+
+      <div class="index-container">
+        <header data-role="Header" class="index-header">
+          <img
+            alt="logo"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+            class="index-image"
+          />
+          <span class="index-text">
+            <span>Form generator</span>
+            <br />
+          </span>
+          <a
+            href="https://github.com/duckpvpteam/csharp-form-generator"
+            target="_blank"
+            rel="noreferrer noopener"
+            class="index-link"
+          >
+            <img
+              alt="image"
+              src="public/assets/github-corner-right.svg"
+              class="index-image1"
+            />
+          </a>
+        </header>
+        <div class="index-container01">
+          <div class="index-container02">
+            <div class="index-container03">
+              <div class="index-container04">
+                <span>
+                  <span>Form config</span>
+                  <br />
+                </span>
+                <div class="index-container05"></div>
+				<h1>background color</h1>
+				<script src="lib/w3color.js"></script>
+				<script>
+var hh = 0;
+function clickColor(hex, seltop, selleft, html5) {
+    var c, cObj, colormap, areas, i, areacolor, cc;
+    if (html5 && html5 == 5)  {
+        c = document.getElementById("html5colorpicker").value;
+    }
+    cObj = w3color(c);
+    colorhex = cObj.toHexString();
+    r = cObj.red;
+    g = cObj.green;
+    b = cObj.blue;
+    document.getElementById("colorrgbDIV").innerHTML = cObj.toRgbString();
+    if ((!seltop || seltop == -1) && (!selleft || selleft == -1)) {
+        colormap = document.getElementById("colormap");
+        areas = colormap.getElementsByTagName("AREA");
+        for (i = 0; i < areas.length; i++) {
+            areacolor = areas[i].getAttribute("onmouseover").replace('mouseOverColor("', '');
+            areacolor = areacolor.replace('")', '');
+            if (areacolor.toLowerCase() == colorhex) {
+                cc = areas[i].getAttribute("onclick").replace(')', '').split(",");
+                seltop = Number(cc[1]);
+                selleft = Number(cc[2]);
+            }
+        }
+  }
+}
+</script>
+				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ff0000" style="width:85%;">
+				<p id="colorrgbDIV">rgb(0, 0 ,0)</p>
+                <input type="text" placeholder="text" class="input"/>
+              </div>
+              <div class="index-container06">
+                <div id="window" ondrop="drop(event)" onclick="resize()" style="width: 20%; height: 15%; resize: both; overflow: hidden;border: 1px solid black;" ondragover="allowDrop(event)" class="index-container07">
+                  <div class="index-container08">
+                    <span class="index-text06" style="width: auto; background-color: #d0d0d0;">
+                      <input id="formname" placeholder="Form" style="width: auto; background-color: #d0d0d0;"></input>
+                      <br/>
+                    </span>
+                    <svg
+                      viewBox="0 0 804.5714285714286 1024"
+                      class="index-icon"
+                    >
+                      <path
+                        d="M804.571 420.571v109.714c0 30.286-24.571 54.857-54.857 54.857h-694.857c-30.286 0-54.857-24.571-54.857-54.857v-109.714c0-30.286 24.571-54.857 54.857-54.857h694.857c30.286 0 54.857 24.571 54.857 54.857z"
+                      ></path></svg
+                    ><svg viewBox="0 0 1024 1024" class="index-icon2">
+                      <path
+                        d="M146.286 804.571h731.429v-438.857h-731.429v438.857zM1024 164.571v694.857c0 50.286-41.143 91.429-91.429 91.429h-841.143c-50.286 0-91.429-41.143-91.429-91.429v-694.857c0-50.286 41.143-91.429 91.429-91.429h841.143c50.286 0 91.429 41.143 91.429 91.429z"
+                      ></path></svg
+                    ><svg viewBox="0 0 1024 1024" class="index-icon4">
+                      <path
+                        d="M810 274l-238 238 238 238-60 60-238-238-238 238-60-60 238-238-238-238 60-60 238 238 238-238z"
+                      ></path>
+                    </svg>
+                  </div>
+                  <div id="id2" class="index-container09"></div>
+                </div>
+              </div>
+            </div>
+            <div class="index-container10">
+              <div class="index-container11">
+			  <h1 style="color: #ffffff" id="dimentions">0x0</h1>
+			  </div>
+              <div class="index-container12">
+                <div class="index-container13">
+                  <span class="index-text09">Import</span>
+                </div>
+                <div class="index-container14" onclick="export_code()">
+                  <span class="index-text10">Export</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="index-container15">
+            <div class="index-container16">
+              <h1 class="index-text11">Controls</h1>
+              <div
+                class="app-component-container app-component-root-class-name"
+              >
+                <div id="label" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                  <img
+                    alt="image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+                    class="app-component-image"
+                  />
+                  <h1 class="app-component-text"><span>Title</span></h1>
+                </div>
+              </div>
+			  <div
+                class="app-component-container app-component-root-class-name"
+              >
+                <div id="label2" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                  <img
+                    alt="image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+                    class="app-component-image"
+                  />
+                  <h1 class="app-component-text"><span>Subtitle</span></h1>
+                </div>
+              </div>
+              <div
+                class="app-component-container app-component-root-class-name"
+              >
+                <div id="pic" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                  <img
+                    alt="image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+                    class="app-component-image"
+                  />
+                  <h1 class="app-component-text"><span>PictureBox</span></h1>
+                </div>
+              </div>
+              <div class="app-component-container app-component-root-class-name">
+                <div id="textbox" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                  <img
+                    alt="image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+                    class="app-component-image"
+                  />
+                  <h1 class="app-component-text"><span>TextBox</span></h1>
+                </div>
+              </div>
+              <div
+                class="app-component-container app-component-root-class-name"
+              >
+                <div id="button" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                  <img
+                    alt="image"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"
+                    class="app-component-image"
+                  />
+                  <h1 class="app-component-text"><span>Button</span></h1>
+                </div>
+              </div>
+            </div>
+            <div class="index-container17">
+              <img
+				ondrop="delete(event)" 
+				ondragover="allowDrop(event)"
+			    id="delete"
+                src="public/assets/delete-200h.png"
+                alt="image"
+                class="index-image2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
