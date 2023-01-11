@@ -17,6 +17,16 @@ function export_code()
 	
 	var backslash = "\\";
 	
+	var matches = [];
+	var searchEles = document.getElementById("id2").children;
+	for(var i = 0; i < searchEles.length; i++) {
+		if(searchEles[i].tagName == 'SELECT' || searchEles.tagName == 'INPUT') {
+			if(searchEles[i].id.indexOf('q1_') == 0) {
+				matches.push(searchEles[i]);
+			}
+		}
+	}
+	
 	build(name, width, height, cObj.toRgbString());
 	customAlert.alert(`I've just finnished to build your C# Form window. You can now compile it with:
 C:`+backslash+`Windows`+backslash+`Microsoft.net`+backslash+`Framework64`+backslash+`v3.5`+backslash+`csc.exe `+name+".cs",'Your code is builded!');
@@ -32,18 +42,22 @@ function resize()
 	if(width > 1400)
 	{
 		document.getElementById('window').style.width = "1400px";
+		console.log("too width");
 	}
-	if(height > 6)
+	if(height > 640)
 	{
 		document.getElementById('window').style.height = "640px";
+		console.log("too height");
 	}
 	if(width < 100)
 	{
 		document.getElementById('window').style.width = "100px";
+		console.log("not too width");
 	}
 	if(height < 100)
 	{
 		document.getElementById('window').style.height = "100px";
+		console.log("not too height");
 	}
 	console.log("width: "+width+" height: "+height);
 }
@@ -81,14 +95,14 @@ function drop(ev, type) {
 	if (id == "label")
 	{
 		const newdiv = document.createElement("div");		
-		newdiv.innerHTML += "<input name='Title'></input>";
+		newdiv.innerHTML += "<input value='Title' name='Title'></input>";
 		
 		ev.target.appendChild(newdiv);
 	}
 	if (id == "label2")
 	{
 		const newdiv = document.createElement("div");		
-		newdiv.innerHTML += "<input name='Subtitle'></input>";
+		newdiv.innerHTML += "<input style='margin-bottom: 5px;' value='Subtitle' name='Subtitle'></input>";
 		
 		ev.target.appendChild(newdiv);
 	}

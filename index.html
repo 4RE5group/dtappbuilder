@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <script src="./code.js"></script>
-  <body>
+  <body onload="document.getElementById('id2').style.backgroundColor = document.getElementById('html5colorpicker').value;">
     <div>
       <link href="./index.css" rel="stylesheet" />
 
@@ -85,6 +85,7 @@ function clickColor(hex, seltop, selleft, html5) {
     g = cObj.green;
     b = cObj.blue;
     document.getElementById("colorrgbDIV").innerHTML = cObj.toRgbString();
+    document.getElementById("id2").style.backgroundColor = document.getElementById("html5colorpicker").value;
     if ((!seltop || seltop == -1) && (!selleft || selleft == -1)) {
         colormap = document.getElementById("colormap");
         areas = colormap.getElementsByTagName("AREA");
@@ -100,14 +101,14 @@ function clickColor(hex, seltop, selleft, html5) {
   }
 }
 </script>
-				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ff0000" style="width:85%;">
-				<p id="colorrgbDIV">rgb(0, 0 ,0)</p>
-                <input type="text" placeholder="text" class="input"/>
+				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ffffff" style="width:85%;">
+				<p style="margin-bottom: 20px" id="colorrgbDIV">rgb(255, 255, 255)</p>
+                <input id="" type="text" placeholder="text" class="input"/>
               </div>
               <div class="index-container06">
-                <div id="window" ondrop="drop(event)" onclick="resize()" style="width: 20%; height: 15%; resize: both; overflow: hidden;border: 1px solid black;" ondragover="allowDrop(event)" class="index-container07">
+                <div id="window" onmouseleave="resize()" onmousemove="resize()" style="width: 20%; height: 15%; resize: both; overflow: hidden;border: 1px solid black;" class="index-container07">
                   <div class="index-container08">
-                    <span class="index-text06" style="width: auto; background-color: #d0d0d0;">
+                    <span class="index-text06" style="width: 100%; background-color: #d0d0d0;">
                       <input id="formname" placeholder="Form" style="width: auto; background-color: #d0d0d0;"></input>
                       <br/>
                     </span>
@@ -128,7 +129,7 @@ function clickColor(hex, seltop, selleft, html5) {
                       ></path>
                     </svg>
                   </div>
-                  <div id="id2" class="index-container09"></div>
+                  <div id="id2" ondrop="drop(event)" ondragover="allowDrop(event)" class="index-container09"></div>
                 </div>
               </div>
             </div>
