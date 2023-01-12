@@ -4,6 +4,13 @@ let offsetY;
 function export_code()
 {
 	let name = document.getElementById('formname').value.replaceAll(" ", "_");
+	if(name == "")
+	{
+		name="untitled";
+	}
+	
+	
+	
 	let box = document.getElementById('window');
 	let width = box.offsetWidth;
 	let height = box.offsetHeight;
@@ -39,32 +46,43 @@ function resize()
 	let width = box.offsetWidth;
 	let height = box.offsetHeight;
 	document.getElementById("dimentions").innerHTML = width+"x"+height;
-	if(width > 1400)
+	if(width > 1000)
 	{
-		document.getElementById('window').style.width = "1400px";
-		console.log("too width");
+		document.getElementById('window').style.width = "1000px";
+		// console.log("too width");
 	}
 	if(height > 640)
 	{
 		document.getElementById('window').style.height = "640px";
-		console.log("too height");
+		// console.log("too height");
 	}
-	if(width < 100)
+	if(width < 200)
 	{
-		document.getElementById('window').style.width = "100px";
-		console.log("not too width");
+		document.getElementById('window').style.width = "200px";
+		// console.log("not too width");
 	}
-	if(height < 100)
+	if(height < 200)
 	{
-		document.getElementById('window').style.height = "100px";
-		console.log("not too height");
+		document.getElementById('window').style.height = "200px";
+		// console.log("not too height");
 	}
-	console.log("width: "+width+" height: "+height);
+	// console.log("width: "+width+" height: "+height);
 }
 
 function allowDrop(ev) {
 	ev.preventDefault();
 	ev.dataTransfer.dropEffect = "move";
+}
+
+function allowDelete(ev) {
+	ev.preventDefault();
+	ev.dataTransfer.dropEffect = "move";
+}
+function deletebin(ev) {
+	// id = ev.target.id;
+	console.log(id);
+	var elem = document.getElementById(id);
+    return elem.parentNode.removeChild(elem);
 }
 
 function drag(ev) {
@@ -75,14 +93,11 @@ function drag(ev) {
     // offsetY = ev.clientY - rect.y;
 }
 
-function drop(ev) {
-	id = ev.target.id;
-}
-
 
 function drop(ev, type) {
 	
 	ev.preventDefault();
+	const rand = Math.random().toString().substr(2, 8);
 	// const left = parseInt(id2.style.left);
 	// const top = parseInt(id2.style.top);
 
@@ -94,7 +109,8 @@ function drop(ev, type) {
 	
 	if (id == "label")
 	{
-		const newdiv = document.createElement("div");		
+		const newdiv = document.createElement("div");
+		newdiv.setAttribute("id", rand);		
 		newdiv.innerHTML += "<input value='Title' name='Title'></input>";
 		
 		ev.target.appendChild(newdiv);
@@ -109,7 +125,7 @@ function drop(ev, type) {
 	if (id == "pic")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", "picture_");
+		newdiv.setAttribute("id", rand);		
 			
 		const newpic = document.createElement("img");
 		newpic.setAttribute("id", "image");
@@ -127,14 +143,14 @@ function drop(ev, type) {
 	if (id == "button")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", "button_");
-		newdiv.innerHTML += "<button style='border-color: #000000; border-width: 1px;'>Button</button>";
+		newdiv.setAttribute("id", rand);		
+		newdiv.innerHTML += "<button draggable='true' ondragstart='drag(event)' style='border-color: #000000; border-width: 1px;'>Button</button>";
 		ev.target.appendChild(newdiv);
 	}
 	if (id == "textbox")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", "textbox_");
+		newdiv.setAttribute("id", rand);		
 		const newbut = document.createElement("textbox");
 		newbut.setAttribute("placeholder", "TextBox");
 		newbut.setAttribute("width", "100px");

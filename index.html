@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>C# Forms generator</title>
-    <meta property="og:title" content="C# Forms generator" />
+    <title>cfg - C# GUI generator</title>
+    <meta property="og:title" content="cfg - C# GUI generator" />
 
     <style data-tag="reset-style-sheet">
       html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6 {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
@@ -106,7 +106,7 @@ function clickColor(hex, seltop, selleft, html5) {
                 <input id="" type="text" placeholder="text" class="input"/>
               </div>
               <div class="index-container06">
-                <div id="window" onmouseleave="resize()" onmousemove="resize()" style="width: 20%; height: 15%; resize: both; overflow: hidden;border: 1px solid black;" class="index-container07">
+                <div id="window" onmouseleave="resize()" onmousemove="resize()" style="width: 350px; height: 200px; resize: both; overflow: hidden;border: 1px solid black;" class="index-container07">
                   <div class="index-container08">
                     <span class="index-text06" style="width: 100%; background-color: #d0d0d0;">
                       <input id="formname" placeholder="Form" style="width: auto; background-color: #d0d0d0;"></input>
@@ -211,8 +211,8 @@ function clickColor(hex, seltop, selleft, html5) {
             </div>
             <div class="index-container17">
               <img
-				ondrop="delete(event)" 
-				ondragover="allowDrop(event)"
+				ondrop="deletebin(event)" 
+				ondragover="allowDelete(event)"
 			    id="delete"
                 src="public/assets/delete-200h.png"
                 alt="image"
