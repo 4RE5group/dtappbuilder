@@ -1,6 +1,21 @@
 let offsetX;
 let offsetY;
 
+function import_code()
+{
+	var input = document.createElement('input');
+	input.type = 'file';
+	
+	input.onchange = e => { 
+	   var file = e.target.files[0];
+	   console.log(input);
+	}
+
+	
+	
+	input.click();
+}
+
 function export_code()
 {
 	let name = document.getElementById('formname').value.replaceAll(" ", "_");
