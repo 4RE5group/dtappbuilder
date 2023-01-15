@@ -56,9 +56,9 @@ function resize()
 		document.getElementById('window').style.height = "640px";
 		// console.log("too height");
 	}
-	if(width < 200)
+	if(width < 350)
 	{
-		document.getElementById('window').style.width = "200px";
+		document.getElementById('window').style.width = "350px";
 		// console.log("not too width");
 	}
 	if(height < 200)
@@ -78,7 +78,8 @@ function allowDelete(ev) {
 	ev.preventDefault();
 	ev.dataTransfer.dropEffect = "move";
 }
-function deletebin(ev) {
+function deletebin(ev, type) {
+	ev.preventDefault();
 	// id = ev.target.id;
 	console.log(id);
 	var elem = document.getElementById(id);
@@ -93,11 +94,11 @@ function drag(ev) {
     // offsetY = ev.clientY - rect.y;
 }
 
-
+var rand;
 function drop(ev, type) {
 	
 	ev.preventDefault();
-	const rand = Math.random().toString().substr(2, 8);
+	rand = Math.random().toString().substr(2, 8);
 	// const left = parseInt(id2.style.left);
 	// const top = parseInt(id2.style.top);
 
@@ -110,23 +111,30 @@ function drop(ev, type) {
 	if (id == "label")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);		
-		newdiv.innerHTML += "<input value='Title' name='Title'></input>";
+		newdiv.setAttribute("id", rand);
+		newdiv.innerHTML += "<input id='"+rand+5+"' class='draggable_div' style='background-color: transparent; margin-bottom: 5px;' value='Title' name='Title'></input>";
 		
 		ev.target.appendChild(newdiv);
+		
+		const collection = document.getElementsByClassName("draggable_div");
+		for (let i = 0; i < collection.length; i++) {
+			dragElement(collection[i]);
+			getDivPosition(rand);
+		}
+		console.log(document.getElementById(rand).offsetWidth);
 	}
 	if (id == "label2")
 	{
 		const newdiv = document.createElement("div");		
-		newdiv.innerHTML += "<input style='margin-bottom: 5px;' value='Subtitle' name='Subtitle'></input>";
+		newdiv.innerHTML += "<input draggable='true' ondragstart='drag(event)' style='background-color: transparent; margin-bottom: 5px;' value='Subtitle' name='Subtitle'></input>";
 		
 		ev.target.appendChild(newdiv);
 	}
 	if (id == "pic")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);		
-			
+		newdiv.setAttribute("id", rand);
+		
 		const newpic = document.createElement("img");
 		newpic.setAttribute("id", "image");
 		newpic.setAttribute("width", "50px");
@@ -150,7 +158,7 @@ function drop(ev, type) {
 	if (id == "textbox")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);		
+		newdiv.setAttribute("id", rand);
 		const newbut = document.createElement("textbox");
 		newbut.setAttribute("placeholder", "TextBox");
 		newbut.setAttribute("width", "100px");
@@ -162,6 +170,16 @@ function drop(ev, type) {
 }
 function build(name, width, height, color)
 {
+	var buttonwidth="248";
+	var buttonheight="20";
+	
+	
+	elmnt = document.getElementById(rand+5);
+	var elementx=getDivPosition(rand+5) - getDivPosition(elmnt.parentNode.id);
+	var elementy=getDivPosition2(rand+5) - getDivPosition2(elmnt.parentNode.id);
+	elementx = parseInt(elementx, 10);
+	elementy = parseInt(elementy, 10);
+	
 var cscode = `using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -221,8 +239,8 @@ namespace CSform
 			button.ForeColor = Color.White;
 			button.BackColor = Color.Black;
             button.Text = "Install";
-            button.Size = new Size(440, 50);
-            button.Location = new Point(5, (this.Height - 100));
+            button.Size = new Size(`+buttonwidth+`, `+buttonheight+`);
+            button.Location = new Point(`+elementx+`, `+elementy+buttonheight+`);
             //button.Click += new System.EventHandler(this.install);
 			button.FlatStyle = FlatStyle.Flat;
 			button.FlatAppearance.BorderSize = 0;
@@ -332,3 +350,122 @@ function CustomAlert(){
 }
 
 let customAlert = new CustomAlert();
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "_header")) {
+	/* if present, the header is where you move the DIV from:*/
+	document.getElementById(elmnt.id + "_header").onmousedown = dragMouseDown;
+  } else {
+	/* otherwise, move the DIV from anywhere inside the DIV:*/
+	elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+	e = e || window.event;
+	e.preventDefault();
+	// get the mouse cursor position at startup:
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+	document.onmouseup = closeDragElement;
+	// call a function whenever the cursor moves:
+	document.onmousemove = elementDrag;
+  }
+	  
+  function elementDrag(e) {
+	e = e || window.event;
+	e.preventDefault();
+	// calculate the new cursor position:
+	pos1 = pos3 - e.clientX;
+	pos2 = pos4 - e.clientY;
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+	// set the element's new position:
+	elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+	elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+  function closeDragElement() {
+	/* stop moving when mouse button is released:*/
+	document.onmouseup = null;
+	document.onmousemove = null;
+	 }	  
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "_header")) {
+	/* if present, the header is where you move the DIV from:*/
+	document.getElementById(elmnt.id + "_header").onmousedown = dragMouseDown;
+  } else {
+	/* otherwise, move the DIV from anywhere inside the DIV:*/
+	elmnt.onmousedown = dragMouseDown;
+  }
+  function dragMouseDown(e) {
+	e = e || window.event;
+	e.preventDefault();
+	// get the mouse cursor position at startup:
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+	document.onmouseup = closeDragElement;
+	// call a function whenever the cursor moves:
+	document.onmousemove = elementDrag;
+  }
+  
+  function elementDrag(e) {
+	e = e || window.event;
+	e.preventDefault();
+	// calculate the new cursor position:
+	pos1 = pos3 - e.clientX;
+	pos2 = pos4 - e.clientY;
+	pos3 = e.clientX;
+	pos4 = e.clientY;
+	// set the element's new position:
+  	elmnt.style.top = (getDivPosition(elmnt.id) - pos2) + "px";
+	elmnt.style.left = (getDivPosition2(elmnt.id) - pos1) + "px";
+	
+	//cant go less than window
+	if((getDivPosition(elmnt.id) - pos2) <= getDivPosition(elmnt.parentNode.id))
+	{
+		elmnt.style.top = getDivPosition(elmnt.parentNode.id) + "px";
+	}
+	if((getDivPosition2(elmnt.id) - pos1) <= getDivPosition2(elmnt.parentNode.id))
+	{
+		elmnt.style.left = getDivPosition2(elmnt.parentNode.id) + "px";
+	}
+	//cant go more than window
+	if((getDivPosition(elmnt.id) - pos2) >= (getDivPosition(elmnt.parentNode.id)+document.getElementById("id2").offsetHeight))
+	{
+		// console.log("more width: "+(getDivPosition(elmnt.parentNode.id)+elmnt.parentNode.offsetHeight)+"/"+(getDivPosition(elmnt.id) - pos2));
+		elmnt.style.top = getDivPosition(elmnt.parentNode.id)+elmnt.offsetHeight+document.getElementById("id2").offsetHeight + "px";
+	}
+	if((getDivPosition2(elmnt.id) - pos1) >= (getDivPosition2(elmnt.parentNode.id)+document.getElementById("id2").offsetWidth))
+	{
+		// console.log("more height");
+		elmnt.style.left = getDivPosition2(elmnt.parentNode.id)+elmnt.offsetWidth+document.getElementById("id2").offsetWidth + "px";
+	}
+	// console.log(getDivPosition(elmnt.id) - pos2);
+	// console.log("X: "+((getDivPosition(elmnt.id) - pos2) - getDivPosition(elmnt.parentNode.id))+" Y: "+ ((getDivPosition2(elmnt.id) - pos1) - getDivPosition2(elmnt.parentNode.id)));
+	// console.log(elmnt.marginLeft - pos1);
+  }
+
+  function closeDragElement() {
+	/* stop moving when mouse button is released:*/
+	document.onmouseup = null;
+	document.onmousemove = null;
+  }
+}
+function getDivPosition(name)
+{ 
+    var rect = document.getElementById(name).getBoundingClientRect();
+    var x = document.getElementById(name).clientX - rect.left; //x position within the element.
+    var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
+    // console.log("Left? : " + x + " ; Top? : " + y + ".");
+    // console.log("Left? : " + rect.top);
+    return(rect.top);
+}
+function getDivPosition2(name)
+{ 
+    var rect = document.getElementById(name).getBoundingClientRect();
+    var x = document.getElementById(name).clientX - rect.left; //x position within the element.
+    var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
+    // console.log("Left? : " + x + " ; Top? : " + y + ".");
+    // console.log("Left? : " + rect.top);
+    return(rect.left);
+}

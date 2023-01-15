@@ -1,3 +1,19 @@
+.draggable_div {
+  position: absolute;
+  /* z-index: 9; */
+  background-color: #000000;
+  border: 1px solid #d3d3d3;
+  text-align: center;
+}
+
+.draggable_div_header {
+  padding: 10px;
+  cursor: move;
+  /* z-index: 10; */
+  background-color: #2196F3;
+  color: #ffffff;
+}
+
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 
 /* ---------------Animation---------------- */

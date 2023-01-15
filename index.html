@@ -101,6 +101,7 @@ function clickColor(hex, seltop, selleft, html5) {
   }
 }
 </script>
+<script src="lib/MooTools-Core-1.6.0.js"></script>
 				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ffffff" style="width:85%;">
 				<p style="margin-bottom: 20px" id="colorrgbDIV">rgb(255, 255, 255)</p>
                 <input id="" type="text" placeholder="text" class="input"/>
@@ -139,7 +140,7 @@ function clickColor(hex, seltop, selleft, html5) {
 			  </div>
               <div class="index-container12">
                 <div class="index-container13">
-                  <span class="index-text09">Import</span>
+                  <span class="index-text09" onclick="import_code()">Import</span>
                 </div>
                 <div class="index-container14" onclick="export_code()">
                   <span class="index-text10">Export</span>
