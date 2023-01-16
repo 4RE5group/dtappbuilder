@@ -7,15 +7,18 @@ function import_code()
 	input.type = 'file';
 	
 	input.onchange = e => { 
-	   var file = e.target.files[0];
-	   console.log(input);
+		var file = e.target.files[0];
+		// console.log(input.value);
+		const reader = new FileReader()
+		reader.readAsDataURL(file);
+		// console.log(reader.readAsDataURL(file));
+		console.log(reader.result);
 	}
 
 	
 	
 	input.click();
 }
-
 function export_code()
 {
 	let name = document.getElementById('formname').value.replaceAll(" ", "_");
@@ -467,7 +470,7 @@ function dragElement(elmnt) {
   }
 }
 function getDivPosition(name)
-{ 
+{
     var rect = document.getElementById(name).getBoundingClientRect();
     var x = document.getElementById(name).clientX - rect.left; //x position within the element.
     var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
@@ -476,7 +479,7 @@ function getDivPosition(name)
     return(rect.top);
 }
 function getDivPosition2(name)
-{ 
+{
     var rect = document.getElementById(name).getBoundingClientRect();
     var x = document.getElementById(name).clientX - rect.left; //x position within the element.
     var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
