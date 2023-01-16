@@ -1,18 +1,50 @@
 let offsetX;
 let offsetY;
 
+let gui_items = [];
+
+function get_import_input(name2, file2)
+{
+	result = "not found";
+	importfile=file2.replaceAll("\r", "");
+	lines = importfile.split("\n");
+	// lines.forEach(element => 
+		// if(element == "")
+		// {
+			// if(!element == " ")
+			// {
+			// name2=name+": ";
+			// console.log(element.startsWith(name2));
+				// if(element.startsWith(name+": "))
+				// {
+					// result=element.replaceAll(name+": ", "");
+				// }
+			// }
+		// }
+	// );
+	return result;
+}
+
 function import_code()
 {
 	var input = document.createElement('input');
 	input.type = 'file';
 	
 	input.onchange = e => { 
-		var file = e.target.files[0];
-		// console.log(input.value);
-		const reader = new FileReader()
-		reader.readAsDataURL(file);
-		// console.log(reader.readAsDataURL(file));
-		console.log(reader.result);
+		var files = e.target.files;
+		var file = files[0];           
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			var importfile=event.target.result.replaceAll("\r", "");
+			var lines = importfile.split("\n");
+			// lines.forEach(element => 
+				// if(element != "" & element != " ")
+				// {
+					// console.log(get_import_input("name", element));
+				// }
+			// );
+		}
+		reader.readAsText(file)
 	}
 
 	
@@ -112,6 +144,11 @@ function drag(ev) {
     // offsetY = ev.clientY - rect.y;
 }
 
+function add_item(type, id, name, width, height, color, top, left)
+{
+	gui_items.push(type+";"+id+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left);
+}
+
 var rand;
 function drop(ev, type) {
 	
@@ -130,8 +167,8 @@ function drop(ev, type) {
 	{
 		const newdiv = document.createElement("div");
 		newdiv.setAttribute("id", rand);
-		newdiv.innerHTML += "<input id='"+rand+5+"' class='draggable_div' style='background-color: transparent; margin-bottom: 5px;' value='Title' name='Title'></input>";
 		
+		newdiv.innerHTML += "<input id='"+rand+5+"' class='draggable_div' style='background-color: transparent; margin-bottom: 5px;' value='Title' name='Title'></input>";
 		ev.target.appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
@@ -139,7 +176,9 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
-		console.log(document.getElementById(rand).offsetWidth);
+		// console.log(document.getElementById(rand).offsetWidth);
+		add_item("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
 	}
 	if (id == "label2")
 	{
@@ -439,25 +478,25 @@ function dragElement(elmnt) {
 	elmnt.style.left = (getDivPosition2(elmnt.id) - pos1) + "px";
 	
 	//cant go less than window
-	if((getDivPosition(elmnt.id) - pos2) <= getDivPosition(elmnt.parentNode.id))
+	if((getDivPosition(elmnt.id) - pos2) <= getDivPosition("id2"))
 	{
-		elmnt.style.top = getDivPosition(elmnt.parentNode.id) + "px";
+		elmnt.style.top = getDivPosition("id2") + "px";
 	}
-	if((getDivPosition2(elmnt.id) - pos1) <= getDivPosition2(elmnt.parentNode.id))
+	if((getDivPosition2(elmnt.id) - pos1) <= getDivPosition2("id2"))
 	{
-		elmnt.style.left = getDivPosition2(elmnt.parentNode.id) + "px";
+		elmnt.style.left = getDivPosition2("id2") + "px";
 	}
-	//cant go more than window
-	if((getDivPosition(elmnt.id) - pos2) >= (getDivPosition(elmnt.parentNode.id)+document.getElementById("id2").offsetHeight))
+	
+	if((getDivPosition(elmnt.id) - pos2) >= getDivPosition("id2")+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25)
 	{
-		// console.log("more width: "+(getDivPosition(elmnt.parentNode.id)+elmnt.parentNode.offsetHeight)+"/"+(getDivPosition(elmnt.id) - pos2));
-		elmnt.style.top = getDivPosition(elmnt.parentNode.id)+elmnt.offsetHeight+document.getElementById("id2").offsetHeight + "px";
+		elmnt.style.top = getDivPosition("id2")+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25 + "px";
 	}
-	if((getDivPosition2(elmnt.id) - pos1) >= (getDivPosition2(elmnt.parentNode.id)+document.getElementById("id2").offsetWidth))
+	if((getDivPosition2(elmnt.id) - pos1) >= getDivPosition2("id2")+document.getElementById("id2").offsetWidth-elmnt.offsetWidth)
 	{
-		// console.log("more height");
-		elmnt.style.left = getDivPosition2(elmnt.parentNode.id)+elmnt.offsetWidth+document.getElementById("id2").offsetWidth + "px";
+		elmnt.style.left = getDivPosition2("id2")+document.getElementById("id2").offsetWidth-elmnt.offsetWidth + "px";
 	}
+	
+	
 	// console.log(getDivPosition(elmnt.id) - pos2);
 	// console.log("X: "+((getDivPosition(elmnt.id) - pos2) - getDivPosition(elmnt.parentNode.id))+" Y: "+ ((getDivPosition2(elmnt.id) - pos1) - getDivPosition2(elmnt.parentNode.id)));
 	// console.log(elmnt.marginLeft - pos1);
