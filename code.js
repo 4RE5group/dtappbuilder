@@ -35,7 +35,7 @@ function import_code()
 		var file = files[0];           
 		var reader = new FileReader();
 		reader.onload = function(event) {
-			var importfile=event.target.result.replaceAll("\r", "");
+			var importfile=event.target.result.split("\r").join("");
 			var lines = importfile.split("\n");
 			// lines.forEach(element => 
 				// if(element != "" & element != " ")
@@ -53,7 +53,8 @@ function import_code()
 }
 function export_code()
 {
-	let name = document.getElementById('formname').value.replaceAll(" ", "_");
+	
+	let name = document.getElementById('formname').value.split(" ").join("");
 	if(name == "")
 	{
 		name="untitled";
@@ -144,9 +145,9 @@ function drag(ev) {
     // offsetY = ev.clientY - rect.y;
 }
 
-function add_item(type, id, name, width, height, color, top, left)
+function add_item(type, id, randomname, name, width, height, color, top, left)
 {
-	gui_items.push(type+";"+id+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left);
+	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left);
 }
 
 var rand;
@@ -176,8 +177,15 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
+		const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
 		// console.log(document.getElementById(rand).offsetWidth);
-		add_item("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		console.log(temp1);
+		console.log(temp2);
+		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0]);
 		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
 	}
 	if (id == "label2")
@@ -227,15 +235,23 @@ function drop(ev, type) {
 }
 function build(name, width, height, color)
 {
-	var buttonwidth="248";
-	var buttonheight="20";
+	// var buttonwidth="248";
+	// var buttonheight="20";
 	
 	
-	elmnt = document.getElementById(rand+5);
-	var elementx=getDivPosition(rand+5) - getDivPosition(elmnt.parentNode.id);
-	var elementy=getDivPosition2(rand+5) - getDivPosition2(elmnt.parentNode.id);
-	elementx = parseInt(elementx, 10);
-	elementy = parseInt(elementy, 10);
+	// elmnt = document.getElementById(rand+5);
+	// var elementx=getDivPosition(rand+5) - getDivPosition("id2");
+	// var elementy=getDivPosition2(rand+5) - getDivPosition2("id2");
+	// elementx = parseInt(elementx, 10);
+	// elementy = parseInt(elementy, 10);
+	var privitemslist="";
+	for (var i = 0; i < gui_items.length; i++) {
+		var line=gui_items[i].split(';');
+		privitemslist+="private "+line[0]+" "+line[2]+";\n"
+	  
+	  	// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+	}
+	
 	
 var cscode = `using System;
 using System.Drawing;
@@ -259,8 +275,8 @@ using Microsoft.VisualBasic;
 namespace CSform
 {
     public class CSform : Form {
-        private RoundedButton button;
-
+		`+privitemslist+`
+		
         public CSform() {
             DisplayGUI();
         }
@@ -288,19 +304,7 @@ namespace CSform
 			//dsicon.ClientSize = new Size(440, 100);
             //dsicon.Size = new Size(440, 100);
             //dsicon.Location = new Point(0, 10);
-			//
-			// button
-			//
-            button = new RoundedButton();
-            button.Name = "button1";
-			button.ForeColor = Color.White;
-			button.BackColor = Color.Black;
-            button.Text = "Install";
-            button.Size = new Size(`+buttonwidth+`, `+buttonheight+`);
-            button.Location = new Point(`+elementx+`, `+elementy+buttonheight+`);
-            //button.Click += new System.EventHandler(this.install);
-			button.FlatStyle = FlatStyle.Flat;
-			button.FlatAppearance.BorderSize = 0;
+			`+getitems()+`
 
             this.Controls.Add(button);
         }
@@ -361,6 +365,27 @@ namespace CSform
 	}
 }`;
 downloadfile(name+".cs", cscode);
+}
+function getitems()
+{
+	var list="";
+	for (var i = 0; i < gui_items.length; i++) {
+		var line=gui_items[i].split(';');
+		list += `//
+		// `+line[1]+`
+		//
+        `+line[2]+` = new `+line[0]+`();
+        `+line[2]+`.Name = "`+line[2]+`";
+		`+line[2]+`.ForeColor = Color.White;
+		`+line[2]+`.BackColor = Color.Black;
+		`+line[2]+`.Text = "`+line[3]+`";
+		`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
+		`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+line[5]+`);
+		`+line[2]+`.FlatStyle = FlatStyle.Flat;
+		`+line[2]+`.FlatAppearance.BorderSize = 0;\n`
+		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+	}
+	return list;
 }
 function downloadfile(filename, text) {
   var element = document.createElement('a');
@@ -498,7 +523,21 @@ function dragElement(elmnt) {
 	
 	
 	// console.log(getDivPosition(elmnt.id) - pos2);
-	// console.log("X: "+((getDivPosition(elmnt.id) - pos2) - getDivPosition(elmnt.parentNode.id))+" Y: "+ ((getDivPosition2(elmnt.id) - pos1) - getDivPosition2(elmnt.parentNode.id)));
+	// console.log("X: "+((getDivPosition(elmnt.id) - pos2) - getDivPosition("id2"))+" Y: "+ ((getDivPosition2(elmnt.id) - pos1) - getDivPosition2("id2")));
+	let temp1=(getDivPosition(elmnt.id) - getDivPosition("id2")).toString().split('.');
+	let temp2=(getDivPosition(elmnt.id) - getDivPosition("id2")).toString().split('.');
+	
+	for (var i = 0; i < gui_items.length; i++) {
+		if(gui_items[i].contains(elmnt.id))
+		{
+			var temp=gui_items[i];
+			var temp5=temp.split(';');
+			gui_items.splice(i,1);
+			add_item(temp5[0], elmnt.id, temp5[2], elmnt.text, elmnt.offsetWidth, elmnt.offsetHeight, temp5[6], temp1[0], temp2[0]);
+			console.log(gui_items);
+		}
+	}
+	
 	// console.log(elmnt.marginLeft - pos1);
   }
 
