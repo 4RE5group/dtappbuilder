@@ -151,6 +151,11 @@ function add_item(type, id, randomname, name, width, height, color, top, left)
 }
 
 var rand;
+function edit_label(ev, type) {
+	ev.preventDefault();
+	alert(ev.target.id-6);
+	
+}
 function drop(ev, type) {
 	
 	ev.preventDefault();
@@ -167,9 +172,10 @@ function drop(ev, type) {
 	if (id == "label")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);
+		// newdiv.setAttribute("id", rand);
 		
-		newdiv.innerHTML += "<input id='"+rand+5+"' class='draggable_div' style='background-color: transparent; margin-bottom: 5px;' value='Title' name='Title'></input>";
+		
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div tooltip' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"'>Title</h1><div class='tooltiptext'><p style='color: #ffffff'>Enter text:</p><input id='"+rand+6+"' onchange='edit_label(event)'></input></div></div>";
 		ev.target.appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
@@ -183,10 +189,10 @@ function drop(ev, type) {
 		// console.log(document.getElementById(rand).offsetWidth);
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		console.log(temp1);
-		console.log(temp2);
-		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0]);
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+		// console.log(temp1);
+		// console.log(temp2);
+		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#00000");
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #00000);
 	}
 	if (id == "label2")
 	{
@@ -232,6 +238,16 @@ function drop(ev, type) {
 		newdiv.appendChild(newbut);
 		ev.target.appendChild(newdiv);
 	}
+	var tooltip = document.className('tooltip');
+
+	tooltip.addEventListener('hover', function() {
+	  if (this.classList.contains('active')) {
+		this.classList.remove('active');
+	  } else {
+		this.classList.add('active');
+	  }
+	  
+	});
 }
 function build(name, width, height, color)
 {
@@ -306,7 +322,7 @@ namespace CSform
             //dsicon.Location = new Point(0, 10);
 			`+getitems()+`
 
-            this.Controls.Add(button);
+            `+getitemscontrols()+`
         }
 		private void launch(object source, EventArgs e) {
 			
@@ -366,24 +382,48 @@ namespace CSform
 }`;
 downloadfile(name+".cs", cscode);
 }
+function getitemscontrols()
+{
+	var result="";
+	for (var i = 0; i < gui_items.length; i++) {
+		var line=gui_items[i].split(';');
+		result+="this.Controls.Add("+line[2]+");\n";
+	}
+	
+	return result;
+}
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
 function getitems()
 {
 	var list="";
 	for (var i = 0; i < gui_items.length; i++) {
 		var line=gui_items[i].split(';');
-		list += `//
-		// `+line[1]+`
-		//
-        `+line[2]+` = new `+line[0]+`();
-        `+line[2]+`.Name = "`+line[2]+`";
-		`+line[2]+`.ForeColor = Color.White;
-		`+line[2]+`.BackColor = Color.Black;
-		`+line[2]+`.Text = "`+line[3]+`";
-		`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
-		`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+line[5]+`);
-		`+line[2]+`.FlatStyle = FlatStyle.Flat;
-		`+line[2]+`.FlatAppearance.BorderSize = 0;\n`
-		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+		if(line[0] == "Label")
+		{
+			list += `//
+			// `+line[1]+`
+			//
+			`+line[2]+` = new `+line[0]+`();
+			`+line[2]+`.Name = "`+line[2]+`";
+			`+line[2]+`.ForeColor = Color.FromArgb(`+hexToRgb(line[6]).r+", "+hexToRgb(line[6]).g+", "+hexToRgb(line[6]).b+`);
+			`+line[2]+`.BackColor = Color.FromArgb(`+hexToRgb(line[9]).r+", "+hexToRgb(line[9]).g+", "+hexToRgb(line[9]).b+`);
+			`+line[2]+`.Text = "`+line[3]+`";
+			`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
+			`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
+			`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
+		}
+		if(line[0] == "RoundedButton")
+		{
+			
+		}
+		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000";
 	}
 	return list;
 }
@@ -546,6 +586,7 @@ function dragElement(elmnt) {
 	document.onmouseup = null;
 	document.onmousemove = null;
   }
+  document.querySelector('.tooltip').classList.remove('active');
 }
 function getDivPosition(name)
 {
