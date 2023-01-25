@@ -1,5 +1,6 @@
 let offsetX;
 let offsetY;
+let selected_elem;
 
 let gui_items = [];
 
@@ -145,37 +146,95 @@ function drag(ev) {
     // offsetY = ev.clientY - rect.y;
 }
 
-function add_item(type, id, randomname, name, width, height, color, top, left)
+function add_item(type, id, randomname, name, width, height, color, top, left, backcolor)
 {
-	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left);
+	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left+";"+backcolor);
 }
 
 var rand;
-function edit_label(ev, type) {
-	ev.preventDefault();
-	alert(ev.target.id-6);
-	
+function set_elem(ev, type) {
+	if(!selected_elem == "")
+	{
+		document.getElementById(selected_elem).style.border = "0px solid red"; 
+	}
+	selected_elem=ev.target.id.slice(0, -1);
+	document.getElementById(selected_elem).style.border = "3px solid red"; 
+	// selected_elem=ev.target.id;
+	console.log(selected_elem);
+	set_bar();
+}
+function set_text() {
+	document.getElementById(selected_elem+5).textContent=document.getElementById("label1_text").value;
+	update_elem();
+}
+function set_backcolor() {
+	document.getElementById(selected_elem+5).style.backgroundColor=document.getElementById("label1_back").value;
+	update_elem();
+}
+function set_forecolor() {
+	document.getElementById(selected_elem+5).style.color=document.getElementById("label1_fore").value;
+	update_elem();
+}
+function update_elem() {
+	for (var i = 0; i < gui_items.length; i++) {
+		// console.log(gui_items[i]+" > "+selected_elem);
+		if(gui_items[i].contains(selected_elem))
+		{
+			elmnt=document.getElementById(selected_elem);
+			var temp=gui_items[i];
+			var temp5=temp.split(';');
+			gui_items.splice(i,1);
+			text=""+elmnt.textContent;
+			// console.log("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
+			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor);
+			// console.log(">> "+gui_items);
+		}
+	}
+}
+function set_bar() {
+	for (var i = 0; i < gui_items.length; i++) {
+		console.log(gui_items[i]);
+		if(gui_items[i].contains(selected_elem))
+		{
+			elmnt=document.getElementById(selected_elem+5);
+			alert(elmnt.textContent);
+			var temp=gui_items[i];
+			var temp5=temp.split(';');
+			// gui_items.splice(i,1);
+			if(temp5[0] == "Label")
+			{
+				document.getElementById('label1').style.display="block";
+				document.getElementById('button').style.display="none";
+				console.log("channge inputs");
+				document.getElementById('label1_text').value=elmnt.textContent;
+				document.getElementById('label1_fore').value=elmnt.style.color;
+				document.getElementById('label1_back').value=elmnt.style.backgroundColor;
+			}
+			if(temp5[0] == "RoundedButton")
+			{
+				document.getElementById('label1').style.display="none";
+				document.getElementById('button').style.display="block";
+			}
+			console.log(temp5[0]+" "+temp5[1]);
+			// alert(temp5[0]+" "+temp5[1]);
+		}
+	}
 }
 function drop(ev, type) {
 	
 	ev.preventDefault();
 	rand = Math.random().toString().substr(2, 8);
-	// const left = parseInt(id2.style.left);
-	// const top = parseInt(id2.style.top);
-
-	// label.style.position = 'absolute';
-	// label.style.left = ev.clientX - left - offsetX + 'px';
-	// label.style.top = ev.clientY - top - offsetY + 'px';
-	// id2.appendChild(document.getElementById("label"));
-	
-	
+	if(!selected_elem == "")
+	{
+		document.getElementById(selected_elem).style.border = "0px solid red"; 
+	}
 	if (id == "label")
 	{
 		const newdiv = document.createElement("div");
 		// newdiv.setAttribute("id", rand);
 		
 		
-		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div tooltip' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"'>Title</h1><div class='tooltiptext'><p style='color: #ffffff'>Enter text:</p><input id='"+rand+6+"' onchange='edit_label(event)'></input></div></div>";
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='color: #000000; background-color: transparent'>Title</h1></div>";
 		ev.target.appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
@@ -191,15 +250,33 @@ function drop(ev, type) {
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		// console.log(temp1);
 		// console.log(temp2);
-		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#00000");
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #00000);
+		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "label2")
 	{
-		const newdiv = document.createElement("div");		
-		newdiv.innerHTML += "<input draggable='true' ondragstart='drag(event)' style='background-color: transparent; margin-bottom: 5px;' value='Subtitle' name='Subtitle'></input>";
+		const newdiv = document.createElement("div");
+		// newdiv.setAttribute("id", rand);
 		
+		
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h2 id='"+rand+5+"' style='color: #000000; background-color: transparent'>Subtitle</h2></div>";
 		ev.target.appendChild(newdiv);
+		
+		const collection = document.getElementsByClassName("draggable_div");
+		for (let i = 0; i < collection.length; i++) {
+			dragElement(collection[i]);
+			getDivPosition(rand);
+		}
+		const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
+		// console.log(document.getElementById(rand).offsetWidth);
+		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		// console.log(temp1);
+		// console.log(temp2);
+		add_item("Label", rand+5, randomCharacter, "Subtitle", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "pic")
 	{
@@ -238,16 +315,17 @@ function drop(ev, type) {
 		newdiv.appendChild(newbut);
 		ev.target.appendChild(newdiv);
 	}
-	var tooltip = document.className('tooltip');
+	// var tooltip = document.className('tooltip');
 
-	tooltip.addEventListener('hover', function() {
-	  if (this.classList.contains('active')) {
-		this.classList.remove('active');
-	  } else {
-		this.classList.add('active');
-	  }
+	// tooltip.addEventListener('hover', function() {
+	  // if (this.classList.contains('active')) {
+		// this.classList.remove('active');
+	  // } else {
+		// this.classList.add('active');
+	  // }
 	  
-	});
+	// });
+	document.getElementById(rand).style.border = "3px solid red"; 
 }
 function build(name, width, height, color)
 {
@@ -573,11 +651,11 @@ function dragElement(elmnt) {
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
-			add_item(temp5[0], elmnt.id, temp5[2], elmnt.text, elmnt.offsetWidth, elmnt.offsetHeight, temp5[6], temp1[0], temp2[0]);
-			console.log(gui_items);
+			text=""+elmnt.textContent;
+			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, temp1[0], temp2[0], document.getElementById(elmnt.id+5).style.backgroundColor);
+			// console.log(gui_items);
 		}
 	}
-	
 	// console.log(elmnt.marginLeft - pos1);
   }
 
@@ -586,7 +664,7 @@ function dragElement(elmnt) {
 	document.onmouseup = null;
 	document.onmousemove = null;
   }
-  document.querySelector('.tooltip').classList.remove('active');
+  // document.querySelector('.tooltip').classList.remove('active');
 }
 function getDivPosition(name)
 {

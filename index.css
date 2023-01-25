@@ -1,27 +1,15 @@
+.ht:hover .tooltip {
+  display:block;
+}
+
 .tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-  cursor: pointer;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: auto;
-  background-color: black;
-  color: #fff;
-  flex-direction: column;
-  text-align: center;
-  border-radius: 6px;
-  padding: 10px;
-
-  /* Position the tooltip */
+  display: none;
+  /* color: red; */
+  margin-left: -50px; 
+  /* margin-top: 15px; */
   position: absolute;
-  z-index: 1;
-}
-
-.tooltip.active .tooltiptext {
-  visibility: visible;
+  z-index: 1000;
+  box-shadow: 2px 2px 5px black;
 }
 .draggable_div {
   position: absolute;
@@ -326,6 +314,8 @@
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
   background-color: #363636;
+  z-index: 100;
+  box-shadow: 2px 2px 5px black;
 }
 .index-image {
   width: 44px;
@@ -376,6 +366,7 @@
   justify-content: center;
 }
 .index-container04 {
+  box-shadow: 2px 2px 5px black;
   flex: 0 0 auto;
   width: 30%;
   height: 100%;
@@ -394,7 +385,7 @@
 .index-container05 {
   flex: 0 0 auto;
   width: 100%;
-  height: 100px;
+  height: auto;
   display: flex;
   align-items: flex-start;
   border-color: rgba(120, 120, 120, 0.4);

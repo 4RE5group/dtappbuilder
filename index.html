@@ -76,11 +76,11 @@
             <div class="index-container03">
               <div class="index-container04">
                 <span>
-                  <span>Form config</span>
+                  <h1>Form config</h1>
                   <br />
                 </span>
-                <div class="index-container05"></div>
-				<h1>background color</h1>
+                <div style="margin-top: 20px;" class="index-container05"></div>
+				<h2>Background color</h2>
 				<script src="lib/w3color.js"></script>
 				<script>
 var hh = 0;
@@ -114,7 +114,13 @@ function clickColor(hex, seltop, selleft, html5) {
 <script src="lib/MooTools-Core-1.6.0.js"></script>
 				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ffffff" style="width:85%;">
 				<p style="margin-bottom: 20px" id="colorrgbDIV">rgb(255, 255, 255)</p>
-                <input id="" type="text" placeholder="text" class="input"/>
+				<!-- label1 edit -->
+				<div id="label1" style="display: none; text-align: center;">
+					<input id="label1_text" onchange="set_text()" type="text" placeholder="Text" class="input"/>
+					<input id="label1_fore" onchange="set_forecolor()" type="text" placeholder="Foreground color" class="input"/>
+					<input id="label1_back" onchange="set_backcolor()" type="text" placeholder="Background color" class="input"/>
+				</div>
+				<!-- button edit -->
               </div>
               <div class="index-container06">
                 <div id="window" onmouseleave="resize()" onmousemove="resize()" style="width: 350px; height: 200px; resize: both; overflow: hidden;border: 1px solid black;" class="index-container07">
