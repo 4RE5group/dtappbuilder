@@ -155,16 +155,24 @@ var rand;
 function set_elem(ev, type) {
 	if(!selected_elem == "")
 	{
-		document.getElementById(selected_elem).style.border = "0px solid red"; 
+		document.getElementById(selected_elem).style.border = "0px solid #257AFD"; 
 	}
 	selected_elem=ev.target.id.slice(0, -1);
-	document.getElementById(selected_elem).style.border = "3px solid red"; 
+	document.getElementById(selected_elem).style.border = "3px solid #257AFD"; 
 	// selected_elem=ev.target.id;
 	console.log(selected_elem);
 	set_bar();
 }
 function set_text() {
 	document.getElementById(selected_elem+5).textContent=document.getElementById("label1_text").value;
+	update_elem();
+}
+function set_textsize () {
+	document.getElementById('label1_size_range').textContent=document.getElementById("label1_size").value;
+	
+	let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize;
+	document.getElementById(selected_elem+5).style.fontSize = document.getElementById("label1_size").value + 'px';
+	
 	update_elem();
 }
 function set_backcolor() {
@@ -180,13 +188,15 @@ function update_elem() {
 		// console.log(gui_items[i]+" > "+selected_elem);
 		if(gui_items[i].contains(selected_elem))
 		{
+			let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
+			// console.log(fontSize);
 			elmnt=document.getElementById(selected_elem);
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
 			text=""+elmnt.textContent;
 			// console.log("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
-			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor);
+			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
 			// console.log(">> "+gui_items);
 		}
 	}
@@ -197,7 +207,7 @@ function set_bar() {
 		if(gui_items[i].contains(selected_elem))
 		{
 			elmnt=document.getElementById(selected_elem+5);
-			alert(elmnt.textContent);
+			// alert(elmnt.textContent);
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
 			// gui_items.splice(i,1);
@@ -205,8 +215,10 @@ function set_bar() {
 			{
 				document.getElementById('label1').style.display="block";
 				document.getElementById('button').style.display="none";
-				console.log("channge inputs");
+				// console.log("channge inputs");
 				document.getElementById('label1_text').value=elmnt.textContent;
+				document.getElementById('label1_size').value=elmnt.style.fontSize;
+				document.getElementById('label1_size_range').textContent=elmnt.style.fontSize;
 				document.getElementById('label1_fore').value=elmnt.style.color;
 				document.getElementById('label1_back').value=elmnt.style.backgroundColor;
 			}
@@ -215,7 +227,7 @@ function set_bar() {
 				document.getElementById('label1').style.display="none";
 				document.getElementById('button').style.display="block";
 			}
-			console.log(temp5[0]+" "+temp5[1]);
+			// console.log(temp5[0]+" "+temp5[1]);
 			// alert(temp5[0]+" "+temp5[1]);
 		}
 	}
@@ -226,7 +238,7 @@ function drop(ev, type) {
 	rand = Math.random().toString().substr(2, 8);
 	if(!selected_elem == "")
 	{
-		document.getElementById(selected_elem).style.border = "0px solid red"; 
+		document.getElementById(selected_elem).style.border = "0px solid #257AFD"; 
 	}
 	if (id == "label")
 	{
@@ -234,7 +246,7 @@ function drop(ev, type) {
 		// newdiv.setAttribute("id", rand);
 		
 		
-		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='color: #000000; background-color: transparent'>Title</h1></div>";
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: 40px; color: #000000; background-color: transparent'>Title</h1></div>";
 		ev.target.appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
@@ -325,7 +337,7 @@ function drop(ev, type) {
 	  // }
 	  
 	// });
-	document.getElementById(rand).style.border = "3px solid red"; 
+	document.getElementById(rand).style.border = "3px solid #257AFD"; 
 }
 function build(name, width, height, color)
 {
@@ -341,9 +353,9 @@ function build(name, width, height, color)
 	var privitemslist="";
 	for (var i = 0; i < gui_items.length; i++) {
 		var line=gui_items[i].split(';');
-		privitemslist+="private "+line[0]+" "+line[2]+";\n"
+		privitemslist+="private "+line[0]+" "+line[2]+";\n		"
 	  
-	  	// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5));
+	  	// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000, 20px);
 	}
 	
 	
@@ -368,6 +380,8 @@ using Microsoft.VisualBasic;
 
 namespace CSform
 {
+	//made with C# GUI builder (https://duckpvpteam.github.io/cs-gui-builder/)
+	
     public class CSform : Form {
 		`+privitemslist+`
 		
@@ -375,9 +389,6 @@ namespace CSform
             DisplayGUI();
         }
         private void DisplayGUI() {
-			string userprofile = System.Environment.GetEnvironmentVariable("USERPROFILE");
-			string tempdir = System.Environment.GetEnvironmentVariable("TEMP");
-
 			this.BackColor = Color.FromA`+color+`;
             this.Name = "`+name+`";
             this.Text = "`+name+`";
@@ -398,7 +409,7 @@ namespace CSform
 			//dsicon.ClientSize = new Size(440, 100);
             //dsicon.Size = new Size(440, 100);
             //dsicon.Location = new Point(0, 10);
-			`+getitems()+`
+			`+getitems(color)+`
 
             `+getitemscontrols()+`
         }
@@ -416,8 +427,7 @@ namespace CSform
 		  GraphPath.AddLine(Rect.X + r2, Rect.Y, Rect.Width - r2, Rect.Y);
 		  GraphPath.AddArc(Rect.X + Rect.Width - radius, Rect.Y, radius, radius, 270, 90);
 		  GraphPath.AddLine(Rect.Width, Rect.Y + r2, Rect.Width, Rect.Height - r2);
-		  GraphPath.AddArc(Rect.X + Rect.Width - radius, 
-						   Rect.Y + Rect.Height - radius, radius, radius, 0, 90);
+		  GraphPath.AddArc(Rect.X + Rect.Width - radius, Rect.Y + Rect.Height - radius, radius, radius, 0, 90);
 		  GraphPath.AddLine(Rect.Width - r2, Rect.Height, Rect.X + r2, Rect.Height);
 		  GraphPath.AddArc(Rect.X, Rect.Y + Rect.Height - radius, radius, radius, 90, 90);
 		  GraphPath.AddLine(Rect.X, Rect.Height - r2, Rect.X, Rect.Y + r2);
@@ -465,7 +475,7 @@ function getitemscontrols()
 	var result="";
 	for (var i = 0; i < gui_items.length; i++) {
 		var line=gui_items[i].split(';');
-		result+="this.Controls.Add("+line[2]+");\n";
+		result+="this.Controls.Add("+line[2]+");\n			";
 	}
 	
 	return result;
@@ -478,20 +488,33 @@ function hexToRgb(hex) {
     b: parseInt(result[3], 16)
   } : null;
 }
-function getitems()
+function getitems(color)
 {
 	var list="";
 	for (var i = 0; i < gui_items.length; i++) {
 		var line=gui_items[i].split(';');
+		line[6]=line[6].split('transparent').join(color);
+		line[9]=line[9].split('transparent').join(color);
+		line[6]=convert_color_to_hex(line[6]);
+		line[9]=convert_color_to_hex(line[9]);
+		line[7]=(line[7] | 0);
+		elemname=line[1]+5;
+		alert(elemname);
+		let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
+		
+		line[8]=(line[8] | 0);
+		alert(fontSize);
 		if(line[0] == "Label")
 		{
-			list += `//
+			list += `
+			//
 			// `+line[1]+`
 			//
 			`+line[2]+` = new `+line[0]+`();
 			`+line[2]+`.Name = "`+line[2]+`";
-			`+line[2]+`.ForeColor = Color.FromArgb(`+hexToRgb(line[6]).r+", "+hexToRgb(line[6]).g+", "+hexToRgb(line[6]).b+`);
-			`+line[2]+`.BackColor = Color.FromArgb(`+hexToRgb(line[9]).r+", "+hexToRgb(line[9]).g+", "+hexToRgb(line[9]).b+`);
+			`+line[2]+`.Font = new Font("Arial", `+fontSize+`);
+			`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
+			`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
 			`+line[2]+`.Text = "`+line[3]+`";
 			`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
 			`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
@@ -501,7 +524,7 @@ function getitems()
 		{
 			
 		}
-		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000";
+		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000", 20px;
 	}
 	return list;
 }
@@ -642,9 +665,10 @@ function dragElement(elmnt) {
 	
 	// console.log(getDivPosition(elmnt.id) - pos2);
 	// console.log("X: "+((getDivPosition(elmnt.id) - pos2) - getDivPosition("id2"))+" Y: "+ ((getDivPosition2(elmnt.id) - pos1) - getDivPosition2("id2")));
-	let temp1=(getDivPosition(elmnt.id) - getDivPosition("id2")).toString().split('.');
+	let temp1=(getDivPosition2(elmnt.id) - getDivPosition2("id2")).toString().split('.');
 	let temp2=(getDivPosition(elmnt.id) - getDivPosition("id2")).toString().split('.');
-	
+	// alert(temp1);
+	// alert(temp2);
 	for (var i = 0; i < gui_items.length; i++) {
 		if(gui_items[i].contains(elmnt.id))
 		{
@@ -683,4 +707,155 @@ function getDivPosition2(name)
     // console.log("Left? : " + x + " ; Top? : " + y + ".");
     // console.log("Left? : " + rect.top);
     return(rect.left);
+}
+function convert_color_to_hex(color2) {
+	color=color2;
+	color=color.split("AliceBlue").join("#F0F8FF");
+	color=color.split("AntiqueWhite").join("#FAEBD7");
+	color=color.split("Aqua").join("#00FFFF");
+	color=color.split("Aquamarine").join("#7FFFD4");
+	color=color.split("Azure").join("#F0FFFF");
+	color=color.split("Beige").join("#F5F5DC");
+	color=color.split("Bisque").join("#FFE4C4");
+	color=color.split("Black").join("#000000");
+	color=color.split("BlanchedAlmond").join("#FFEBCD");
+	color=color.split("Blue").join("#0000FF");
+	color=color.split("BlueViolet").join("#8A2BE2");
+	color=color.split("Brown").join("#A52A2A");
+	color=color.split("BurlyWood").join("#DEB887");
+	color=color.split("CadetBlue").join("#5F9EA0");
+	color=color.split("Chartreuse").join("#7FFF00");
+	color=color.split("Chocolate").join("#D2691E");
+	color=color.split("Coral").join("#FF7F50");
+	color=color.split("CornflowerBlue").join("#6495ED");
+	color=color.split("Cornsilk").join("#FFF8DC");
+	color=color.split("Crimson").join("#DC143C");
+	color=color.split("Cyan").join("#00FFFF");
+	color=color.split("DarkBlue").join("#00008B");
+	color=color.split("DarkCyan").join("#008B8B");
+	color=color.split("DarkGoldenRod").join("#B8860B");
+	color=color.split("DarkGray").join("#A9A9A9");
+	color=color.split("DarkGrey").join("#A9A9A9");
+	color=color.split("DarkGreen").join("#006400");
+	color=color.split("DarkKhaki").join("#BDB76B");
+	color=color.split("DarkMagenta").join("#8B008B");
+	color=color.split("DarkOliveGreen").join("#556B2F");
+	color=color.split("Darkorange").join("#FF8C00");
+	color=color.split("DarkOrchid").join("#9932CC");
+	color=color.split("DarkRed").join("#8B0000");
+	color=color.split("DarkSalmon").join("#E9967A");
+	color=color.split("DarkSeaGreen").join("#8FBC8F");
+	color=color.split("DarkSlateBlue").join("#483D8B");
+	color=color.split("DarkSlateGray").join("#2F4F4F");
+	color=color.split("DarkSlateGrey").join("#2F4F4F");
+	color=color.split("DarkTurquoise").join("#00CED1");
+	color=color.split("DarkViolet").join("#9400D3");
+	color=color.split("DeepPink").join("#FF1493");
+	color=color.split("DeepSkyBlue").join("#00BFFF");
+	color=color.split("DimGray").join("#696969");
+	color=color.split("DimGrey").join("#696969");
+	color=color.split("DodgerBlue").join("#1E90FF");
+	color=color.split("FireBrick").join("#B22222");
+	color=color.split("FloralWhite").join("#FFFAF0");
+	color=color.split("ForestGreen").join("#228B22");
+	color=color.split("Fuchsia").join("#FF00FF");
+	color=color.split("Gainsboro").join("#DCDCDC");
+	color=color.split("GhostWhite").join("#F8F8FF");
+	color=color.split("Gold").join("#FFD700");
+	color=color.split("GoldenRod").join("#DAA520");
+	color=color.split("Gray").join("#808080");
+	color=color.split("Grey").join("#808080");
+	color=color.split("Green").join("#008000");
+	color=color.split("GreenYellow").join("#ADFF2F");
+	color=color.split("HoneyDew").join("#F0FFF0");
+	color=color.split("HotPink").join("#FF69B4");
+	color=color.split("IndianRed ").join("#CD5C5C");
+	color=color.split("Indigo ").join("#4B0082");
+	color=color.split("Ivory").join("#FFFFF0");
+	color=color.split("Khaki").join("#F0E68C");
+	color=color.split("Lavender").join("#E6E6FA");
+	color=color.split("LavenderBlush").join("#FFF0F5");
+	color=color.split("LawnGreen").join("#7CFC00");
+	color=color.split("LemonChiffon").join("#FFFACD");
+	color=color.split("LightBlue").join("#ADD8E6");
+	color=color.split("LightCoral").join("#F08080");
+	color=color.split("LightCyan").join("#E0FFFF");
+	color=color.split("LightGoldenRodYellow").join("#FAFAD2");
+	color=color.split("LightGray").join("#D3D3D3");
+	color=color.split("LightGrey").join("#D3D3D3");
+	color=color.split("LightGreen").join("#90EE90");
+	color=color.split("LightPink").join("#FFB6C1");
+	color=color.split("LightSalmon").join("#FFA07A");
+	color=color.split("LightSeaGreen").join("#20B2AA");
+	color=color.split("LightSkyBlue").join("#87CEFA");
+	color=color.split("LightSlateGray").join("#778899");
+	color=color.split("LightSlateGrey").join("#778899");
+	color=color.split("LightSteelBlue").join("#B0C4DE");
+	color=color.split("LightYellow").join("#FFFFE0");
+	color=color.split("Lime").join("#00FF00");
+	color=color.split("LimeGreen").join("#32CD32");
+	color=color.split("Linen").join("#FAF0E6");
+	color=color.split("Magenta").join("#FF00FF");
+	color=color.split("Maroon").join("#800000");
+	color=color.split("MediumAquaMarine").join("#66CDAA");
+	color=color.split("MediumBlue").join("#0000CD");
+	color=color.split("MediumOrchid").join("#BA55D3");
+	color=color.split("MediumPurple").join("#9370D8");
+	color=color.split("MediumSeaGreen").join("#3CB371");
+	color=color.split("MediumSlateBlue").join("#7B68EE");
+	color=color.split("MediumSpringGreen").join("#00FA9A");
+	color=color.split("MediumTurquoise").join("#48D1CC");
+	color=color.split("MediumVioletRed").join("#C71585");
+	color=color.split("MidnightBlue").join("#191970");
+	color=color.split("MintCream").join("#F5FFFA");
+	color=color.split("MistyRose").join("#FFE4E1");
+	color=color.split("Moccasin").join("#FFE4B5");
+	color=color.split("NavajoWhite").join("#FFDEAD");
+	color=color.split("Navy").join("#000080");
+	color=color.split("OldLace").join("#FDF5E6");
+	color=color.split("Olive").join("#808000");
+	color=color.split("OliveDrab").join("#6B8E23");
+	color=color.split("Orange").join("#FFA500");
+	color=color.split("OrangeRed").join("#FF4500");
+	color=color.split("Orchid").join("#DA70D6");
+	color=color.split("PaleGoldenRod").join("#EEE8AA");
+	color=color.split("PaleGreen").join("#98FB98");
+	color=color.split("PaleTurquoise").join("#AFEEEE");
+	color=color.split("PaleVioletRed").join("#D87093");
+	color=color.split("PapayaWhip").join("#FFEFD5");
+	color=color.split("PeachPuff").join("#FFDAB9");
+	color=color.split("Peru").join("#CD853F");
+	color=color.split("Pink").join("#FFC0CB");
+	color=color.split("Plum").join("#DDA0DD");
+	color=color.split("PowderBlue").join("#B0E0E6");
+	color=color.split("Purple").join("#800080");
+	color=color.split("Red").join("#FF0000");
+	color=color.split("RosyBrown").join("#BC8F8F");
+	color=color.split("RoyalBlue").join("#4169E1");
+	color=color.split("SaddleBrown").join("#8B4513");
+	color=color.split("Salmon").join("#FA8072");
+	color=color.split("SandyBrown").join("#F4A460");
+	color=color.split("SeaGreen").join("#2E8B57");
+	color=color.split("SeaShell").join("#FFF5EE");
+	color=color.split("Sienna").join("#A0522D");
+	color=color.split("Silver").join("#C0C0C0");
+	color=color.split("SkyBlue").join("#87CEEB");
+	color=color.split("SlateBlue").join("#6A5ACD");
+	color=color.split("SlateGray").join("#708090");
+	color=color.split("SlateGrey").join("#708090");
+	color=color.split("Snow").join("#FFFAFA");
+	color=color.split("SpringGreen").join("#00FF7F");
+	color=color.split("SteelBlue").join("#4682B4");
+	color=color.split("Tan").join("#D2B48C");
+	color=color.split("Teal").join("#008080");
+	color=color.split("Thistle").join("#D8BFD8");
+	color=color.split("Tomato").join("#FF6347");
+	color=color.split("Turquoise").join("#40E0D0");
+	color=color.split("Violet").join("#EE82EE");
+	color=color.split("Wheat").join("#F5DEB3");
+	color=color.split("White").join("#FFFFFF");
+	color=color.split("WhiteSmoke").join("#F5F5F5");
+	color=color.split("Yellow").join("#FFFF00");
+	color=color.split("YellowGreen").join("#9ACD32");
+	return color;
 }
