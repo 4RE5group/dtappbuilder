@@ -313,7 +313,7 @@
   padding-right: 0px;
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
-  background-color: #363636;
+  background-color: black;
   z-index: 100;
   box-shadow: 2px 2px 5px black;
 }
@@ -380,7 +380,8 @@
   border-radius: var(--dl-radius-radius-radius8);
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #D9D9D9;
+  background-color: black;
+  color: white;
 }
 .index-container05 {
   flex: 0 0 auto;
@@ -497,7 +498,7 @@
   padding: var(--dl-space-space-halfunit);
   align-self: center;
   align-items: flex-end;
-  flex-direction: column;
+  flex-direction: row
   justify-content: center;
 }
 .index-container13 {

@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.js"></script>
+
     <link
       rel="shortcut icon"
       href="favicon.png"
@@ -42,6 +44,7 @@
     />
     <link rel="stylesheet" href="./style.css" />
   </head>
+  <script src="./build_types.js"></script>
   <script src="./code.js"></script>
   <body onload="document.getElementById('id2').style.backgroundColor = document.getElementById('html5colorpicker').value;">
     <div>
@@ -157,12 +160,20 @@ function clickColor(hex, seltop, selleft, html5) {
 			  <h1 style="color: #ffffff" id="dimentions">0x0</h1>
 			  </div>
               <div class="index-container12">
+			  <div style="text-align: end;width: 50%;height: 100%">
+			  <select id="export_option">
+				<option name="winform" value="winform">C# Windows Form</option>
+				<option name="wph" value="wph">C# WPH</option>
+			  </select>
+			  </div>
+			  <div style="width: 50%;height: 100%">
                 <div class="index-container13" onclick="import_code()">
                   <span class="index-text09">Import</span>
                 </div>
                 <div class="index-container14" onclick="export_code()">
                   <span class="index-text10">Export</span>
                 </div>
+			  </div>
               </div>
             </div>
           </div>
@@ -193,9 +204,7 @@ function clickColor(hex, seltop, selleft, html5) {
                   <h1 class="app-component-text"><span>Subtitle</span></h1>
                 </div>
               </div>
-              <div
-                class="app-component-container app-component-root-class-name"
-              >
+			  <div class="app-component-container app-component-root-class-name">
                 <div id="pic" draggable="true" ondragstart="drag(event)" class="app-component-container1">
                   <img
                     alt="image"
