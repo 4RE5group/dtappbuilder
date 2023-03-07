@@ -126,6 +126,15 @@ function clickColor(hex, seltop, selleft, html5) {
 					<div><h3 id="label1_size_range">20</h3><h3>px</h3><input id="label1_size" step="1" onchange="set_textsize()" type="range" min="10" max="60"/></div>
 				</div>
 				<!-- button edit -->
+				<!-- picturebox edit -->
+				<div id="picturebox" style="display: none; text-align: center;">
+					<input id="picturebox_url" onchange="set_src()" type="text" placeholder="PictureBox image url" class="input"/>
+					</br>
+					<div><h3 id="picturebox_width_range">50</h3><h3>px</h3><input id="picturebox_width" step="1" onchange="set_width()" type="range" min="10" max="300"/></div>
+					</br>
+					<div><h3 id="picturebox_height_range">50</h3><h3>px</h3><input id="picturebox_height" step="1" onchange="set_height()" type="range" min="10" max="300"/></div>
+					</br>
+				</div>
               </div>
               <div class="index-container06">
                 <div id="window" onmouseleave="resize()" onmousemove="resize()" style="width: 350px; height: 200px; resize: both; overflow: hidden;border: 1px solid black;" class="index-container07">

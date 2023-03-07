@@ -7,22 +7,21 @@ let gui_items = [];
 function get_import_input(name2, file2)
 {
 	result = "not found";
-	importfile=file2.replaceAll("\r", "");
+	importfile=file2.split("\r").join("");
 	lines = importfile.split("\n");
-	// lines.forEach(element => 
-		// if(element == "")
-		// {
-			// if(!element == " ")
-			// {
-			// name2=name+": ";
-			// console.log(element.startsWith(name2));
-				// if(element.startsWith(name+": "))
-				// {
-					// result=element.replaceAll(name+": ", "");
-				// }
-			// }
-		// }
-	// );
+	for (i = 0; i < lines.length; i++) { 
+		if(lines[i] == "")
+		{}
+		else
+		{
+			// console.log(lines[i]);
+			if(lines[i].startsWith(name2+": "))
+			{
+				result=lines[i].replace(name2+": ", "");
+			}
+		}
+	}
+	
 	return result;
 }
 
@@ -36,14 +35,8 @@ function import_code()
 		var file = files[0];           
 		var reader = new FileReader();
 		reader.onload = function(event) {
-			var importfile=event.target.result.split("\r").join("");
-			var lines = importfile.split("\n");
-			// lines.forEach(element => 
-				// if(element != "" & element != " ")
-				// {
-					// console.log(get_import_input("name", element));
-				// }
-			// );
+			// console.log(event.target.result);
+			console.log(get_import_input("project_name", event.target.result));
 		}
 		reader.readAsText(file)
 	}
@@ -184,6 +177,20 @@ function set_backcolor() {
 	document.getElementById(selected_elem+5).style.backgroundColor=document.getElementById("label1_back").value;
 	update_elem();
 }
+function set_src() {
+	document.getElementById(selected_elem+5).src=document.getElementById("picturebox_url").value;
+	update_elem();
+}
+function set_width() {
+	document.getElementById(selected_elem+5).style.width=document.getElementById("picturebox_width").value+"px";
+	document.getElementById("picturebox_width_range").innerHTML=document.getElementById("picturebox_width").value;
+	update_elem();
+}
+function set_height() {
+	document.getElementById(selected_elem+5).style.height=document.getElementById("picturebox_height").value+"px";
+	document.getElementById("picturebox_height_range").innerHTML=document.getElementById("picturebox_height").value;
+	update_elem();
+}
 function set_forecolor() {
 	document.getElementById(selected_elem+5).style.color=document.getElementById("label1_fore").value;
 	update_elem();
@@ -197,6 +204,8 @@ function update_elem() {
 			// console.log(fontSize);
 			elmnt=document.getElementById(selected_elem);
 			var temp=gui_items[i];
+			temp=temp.replace('"', "'");
+			// alert(temp);
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
 			text=""+elmnt.textContent;
@@ -216,10 +225,16 @@ function set_bar() {
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
 			// gui_items.splice(i,1);
+			
+			//hide edit divs
+			document.getElementById('label1').style.display="none";
+			document.getElementById('button').style.display="none";
+			document.getElementById('picturebox').style.display="none";
+			
+			
 			if(temp5[0] == "Label")
 			{
 				document.getElementById('label1').style.display="block";
-				document.getElementById('button').style.display="none";
 				// console.log("channge inputs");
 				document.getElementById('label1_text').value=elmnt.textContent;
 				document.getElementById('label1_size').value=elmnt.style.fontSize;
@@ -229,8 +244,14 @@ function set_bar() {
 			}
 			if(temp5[0] == "RoundedButton")
 			{
-				document.getElementById('label1').style.display="none";
 				document.getElementById('button').style.display="block";
+			}
+			if(temp5[0] == "PictureBox")
+			{
+				document.getElementById('picturebox').style.display="block";
+				document.getElementById('picturebox_url').value=elmnt.src;
+				document.getElementById('picturebox_width').value=elmnt.style.width;
+				document.getElementById('picturebox_height').textContent=elmnt.style.height;
 			}
 			// console.log(temp5[0]+" "+temp5[1]);
 			// alert(temp5[0]+" "+temp5[1]);
@@ -298,20 +319,27 @@ function drop(ev, type) {
 	if (id == "pic")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);
+		// newdiv.setAttribute("id", rand);
 		
-		const newpic = document.createElement("img");
-		newpic.setAttribute("id", "image");
-		newpic.setAttribute("width", "50px");
-		newpic.setAttribute("heigth", "50px");
-		newpic.setAttribute("src", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png");
-			
-		newdiv.onclick = function () {
-			this.parentElement.removeChild(this);
-		};
-			
-		newdiv.appendChild(newpic);
+		
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><img id='"+rand+5+"' style='width: 50px; height: 50px; background-color: transparent' src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png'></img></div>";
 		ev.target.appendChild(newdiv);
+		
+		const collection = document.getElementsByClassName("draggable_div");
+		for (let i = 0; i < collection.length; i++) {
+			dragElement(collection[i]);
+			getDivPosition(rand);
+		}
+		const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
+		// console.log(document.getElementById(rand).offsetWidth);
+		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		// console.log(temp1);
+		// console.log(temp2);
+		add_item("PictureBox", rand+5, randomCharacter, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "button")
 	{
