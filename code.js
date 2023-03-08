@@ -35,8 +35,27 @@ function import_code()
 		var file = files[0];           
 		var reader = new FileReader();
 		reader.onload = function(event) {
-			// console.log(event.target.result);
-			console.log(get_import_input("project_name", event.target.result));
+			// set porject name
+			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
+			
+			windows_width=get_import_input("window_width", event.target.result);
+			windows_height=get_import_input("window_height", event.target.result);
+			if(parseInt(windows_width) < 300)
+			{
+				document.getElementById("window").style.width="300px";
+			}
+			else
+			{
+				document.getElementById("window").style.width=windows_width;
+			}
+			if(parseInt(windows_height) < 200)
+			{
+				document.getElementById("window").style.height="200px";
+			}
+			else
+			{
+				document.getElementById("window").style.height=windows_height;
+			}
 		}
 		reader.readAsText(file)
 	}
@@ -401,11 +420,11 @@ function getitems(color)
 		line[9]=convert_color_to_hex(line[9]);
 		line[7]=(line[7] | 0);
 		elemname=line[1]+5;
-		alert(elemname);
+		// alert(elemname);
 		let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
 		
 		line[8]=(line[8] | 0);
-		alert(fontSize);
+		// alert(fontSize);
 		if(line[0] == "Label")
 		{
 			list += `
@@ -418,6 +437,7 @@ function getitems(color)
 			`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
 			`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
 			`+line[2]+`.Text = "`+line[3]+`";
+			`+line[2]+`.AutoSize = "true";
 			`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
 			`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
 			`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
@@ -425,6 +445,20 @@ function getitems(color)
 		if(line[0] == "RoundedButton")
 		{
 			
+		}
+		if(line[0] == "PictureBox")
+		{
+			list += `
+			//
+			// `+line[1]+`
+			//
+			`+line[2]+` = new `+line[0]+`();
+            `+line[2]+`.Name = "`+line[2]+`";
+			`+line[2]+`.ImageLocation = "`+line[3]+`";
+			`+line[2]+`.SizeMode = PictureBoxSizeMode.AutoSize;
+			`+line[2]+`.ClientSize = new Size(`+line[4]+`, `+line[5]+`);
+            `+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
+            `+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);`;
 		}
 		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000", 20px;
 	}
