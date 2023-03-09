@@ -10,7 +10,7 @@ function get_import_input(name2, file2)
 	importfile=file2.split("\r").join("");
 	lines = importfile.split("\n");
 	for (i = 0; i < lines.length; i++) { 
-		if(lines[i] == "")
+		if(lines[i] == undefined)
 		{}
 		else
 		{
@@ -21,7 +21,10 @@ function get_import_input(name2, file2)
 			}
 		}
 	}
-	
+	if(result == "not found")
+	{
+		customAlert.alert("Error at line "+i.toString()+": "+lines[i]);
+	}
 	return result;
 }
 
@@ -34,28 +37,18 @@ function import_code()
 		var files = e.target.files;
 		var file = files[0];           
 		var reader = new FileReader();
-		reader.onload = function(event) {
+		reader.onload = function(event) 
+		{
 			// set porject name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
+			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
+			clickColor(0, -1, -1, 5);
 			
 			windows_width=get_import_input("window_width", event.target.result);
 			windows_height=get_import_input("window_height", event.target.result);
-			if(parseInt(windows_width) < 300)
-			{
-				document.getElementById("window").style.width="300px";
-			}
-			else
-			{
-				document.getElementById("window").style.width=windows_width;
-			}
-			if(parseInt(windows_height) < 200)
-			{
-				document.getElementById("window").style.height="200px";
-			}
-			else
-			{
-				document.getElementById("window").style.height=windows_height;
-			}
+			
+			document.getElementById("window").style.width=windows_width;
+			document.getElementById("window").style.height=windows_height;
 		}
 		reader.readAsText(file)
 	}
@@ -67,7 +60,7 @@ function import_code()
 function export_code()
 {
 	
-	let name = document.getElementById('formname').value.split(" ").join("");
+	let name = document.getElementById('formname').value.split(" ").join("-");
 	if(name == "")
 	{
 		name="untitled";
@@ -200,6 +193,20 @@ function set_src() {
 	document.getElementById(selected_elem+5).src=document.getElementById("picturebox_url").value;
 	update_elem();
 }
+function set_width_button() {
+	document.getElementById(selected_elem+5).style.width=document.getElementById("buttonedit_width").value+"px";
+	document.getElementById("buttonedit_width_range").innerHTML=document.getElementById("buttonedit_width").value;
+	update_elem();
+}
+function set_height_button() {
+	document.getElementById(selected_elem+5).style.height=document.getElementById("buttonedit_height").value+"px";
+	document.getElementById("buttonedit_height_range").innerHTML=document.getElementById("buttonedit_height").value;
+	update_elem();
+}
+function set_button_text () {
+	document.getElementById(selected_elem+5).innerHTML=document.getElementById("buttonedit_text").value;
+	update_elem();
+}
 function set_width() {
 	document.getElementById(selected_elem+5).style.width=document.getElementById("picturebox_width").value+"px";
 	document.getElementById("picturebox_width_range").innerHTML=document.getElementById("picturebox_width").value;
@@ -247,7 +254,7 @@ function set_bar() {
 			
 			//hide edit divs
 			document.getElementById('label1').style.display="none";
-			document.getElementById('button').style.display="none";
+			document.getElementById('buttonedit').style.display="none";
 			document.getElementById('picturebox').style.display="none";
 			
 			
@@ -263,7 +270,12 @@ function set_bar() {
 			}
 			if(temp5[0] == "RoundedButton")
 			{
-				document.getElementById('button').style.display="block";
+				document.getElementById('buttonedit').style.display="block";
+				document.getElementById('buttonedit_text').value=elmnt.innerHTML;
+				document.getElementById('buttonedit_width').value=elmnt.style.width;
+				document.getElementById('buttonedit_width_range').innerHTML=elmnt.style.width;
+				document.getElementById('buttonedit_height_range').innerHTML=elmnt.style.height;
+				document.getElementById('buttonedit_height').value=elmnt.style.height;
 			}
 			if(temp5[0] == "PictureBox")
 			{
@@ -277,9 +289,33 @@ function set_bar() {
 		}
 	}
 }
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    if (selected_elem != "" && evt.ctrlKey && evt.keyCode == 90) {
+        alert("Ctrl-Z");
+    }
+	if (selected_elem != "" && evt.keyCode == 8 || evt.keyCode == 46) {
+        for (var i = 0; i < gui_items.length; i++) {
+			// console.log(gui_items[i]+" > "+selected_elem);
+			if(gui_items[i].contains(selected_elem))
+			{
+				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
+				// console.log(fontSize);
+				elmnt=document.getElementById(selected_elem);
+				elmnt.remove();
+				selected_elem="";
+				gui_items.splice(i, 1);
+			}
+		}
+    }
+};
 function drop(ev, type) {
 	
 	ev.preventDefault();
+	
+	const alphabet = "abcdefghijklmnopqrstuvwxyz"
+	const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
+
 	rand = Math.random().toString().substr(2, 8);
 	if(!selected_elem == "")
 	{
@@ -290,7 +326,6 @@ function drop(ev, type) {
 		const newdiv = document.createElement("div");
 		// newdiv.setAttribute("id", rand);
 		
-		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: 40px; color: #000000; background-color: transparent'>Title</h1></div>";
 		ev.target.appendChild(newdiv);
 		
@@ -299,9 +334,6 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
-		const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
 		// console.log(document.getElementById(rand).offsetWidth);
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
@@ -324,10 +356,7 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
-		const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
-		// console.log(document.getElementById(rand).offsetWidth);
+		
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		// console.log(temp1);
@@ -349,10 +378,7 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
-		const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-		const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
-		// console.log(document.getElementById(rand).offsetWidth);
+		
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		// console.log(temp1);
@@ -360,12 +386,27 @@ function drop(ev, type) {
 		add_item("PictureBox", rand+5, randomCharacter, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
 		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
-	if (id == "button")
+	if (id == "addbutton")
 	{
 		const newdiv = document.createElement("div");
-		newdiv.setAttribute("id", rand);		
-		newdiv.innerHTML += "<button draggable='true' ondragstart='drag(event)' style='border-color: #000000; border-width: 1px;'>Button</button>";
+		// newdiv.setAttribute("id", rand);
+		
+		
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><button id='"+rand+5+"' style='width: 100px; height: 35px; color: #ffffff; background-color: #000000' name='"+rand+5+"'>Button</button></div>";
 		ev.target.appendChild(newdiv);
+		
+		const collection = document.getElementsByClassName("draggable_div");
+		for (let i = 0; i < collection.length; i++) {
+			dragElement(collection[i]);
+			getDivPosition(rand);
+		}
+		
+		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
+		// console.log(temp1);
+		// console.log(temp2);
+		add_item("RoundedButton", rand+5, randomCharacter, "Button", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "textbox")
 	{
@@ -379,6 +420,7 @@ function drop(ev, type) {
 		newdiv.appendChild(newbut);
 		ev.target.appendChild(newdiv);
 	}
+	set_bar();
 	// var tooltip = document.className('tooltip');
 
 	// tooltip.addEventListener('hover', function() {

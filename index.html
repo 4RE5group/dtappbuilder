@@ -46,6 +46,7 @@
   </head>
   <script src="./build_types.js"></script>
   <script src="./code.js"></script>
+ 
   <body onload="document.getElementById('id2').style.backgroundColor = document.getElementById('html5colorpicker').value;">
     <div>
       <link href="./index.css" rel="stylesheet" />
@@ -126,6 +127,14 @@ function clickColor(hex, seltop, selleft, html5) {
 					<div><h3 id="label1_size_range">20</h3><h3>px</h3><input id="label1_size" step="1" onchange="set_textsize()" type="range" min="10" max="60"/></div>
 				</div>
 				<!-- button edit -->
+				<div id="buttonedit" style="display: none; text-align: center;">
+					<input id="buttonedit_text" onchange="set_button_text()" type="text" placeholder="Button placeholder" class="input"/>
+					</br>
+					<div><h3 id="buttonedit_width_range">50</h3><h3>px</h3><input id="buttonedit_width" step="1" onchange="set_width_button()" type="range" min="10" max="300"/></div>
+					</br>
+					<div><h3 id="buttonedit_height_range">50</h3><h3>px</h3><input id="buttonedit_height" step="1" onchange="set_height_button()" type="range" min="10" max="300"/></div>
+					</br>
+				</div>
 				<!-- picturebox edit -->
 				<div id="picturebox" style="display: none; text-align: center;">
 					<input id="picturebox_url" onchange="set_src()" type="text" placeholder="PictureBox image url" class="input"/>
@@ -236,7 +245,7 @@ function clickColor(hex, seltop, selleft, html5) {
               <div
                 class="app-component-container app-component-root-class-name"
               >
-                <div id="button" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+                <div id="addbutton" draggable="true" ondragstart="drag(event)" class="app-component-container1">
                   <img
                     alt="image"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png"

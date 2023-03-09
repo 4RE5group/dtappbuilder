@@ -1,3 +1,4 @@
 project_name: name
 window_width: 500px
 window_height: 900px
+window_background: #323232
