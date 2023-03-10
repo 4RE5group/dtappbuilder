@@ -9,7 +9,7 @@ function get_import_input(name2, file2)
 	result = "not found";
 	importfile=file2.split("\r").join("");
 	lines = importfile.split("\n");
-	for (i = 0; i < lines.length; i++) { 
+	for (i = 0; i < lines.length; i++) {
 		if(lines[i] == undefined)
 		{}
 		else
@@ -42,13 +42,20 @@ function import_code()
 			// set porject name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
 			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
-			clickColor(0, -1, -1, 5);
+			try{clickColor(0, -1, -1, 5);} catch (error) {}
 			
 			windows_width=get_import_input("window_width", event.target.result);
 			windows_height=get_import_input("window_height", event.target.result);
 			
 			document.getElementById("window").style.width=windows_width;
 			document.getElementById("window").style.height=windows_height;
+			
+			// import items 
+			imported_items_list = get_import_input("items", event.target.result).split("//!//");
+			for (i = 0; i < imported_items_list.length; i++) { 
+				alert(imported_items_list[i]);
+			}
+			
 		}
 		reader.readAsText(file)
 	}
