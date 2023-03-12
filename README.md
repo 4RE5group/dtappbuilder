@@ -4,5 +4,6 @@ Create esaily functionnal apps with online software builder
 
 ## Objectives
 - [x] Complete ![c#](https://cdn.discordapp.com/emojis/1012329912012644424.webp?size=32&quality=lossless) code builder
+- [ ] Add template system
 - [ ] Add python flask GUI builder
 - [ ] Add other language and libs gui generator
