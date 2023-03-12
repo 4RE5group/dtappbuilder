@@ -1,5 +1,5 @@
-# cs GUI generator
-Create esaily Windows Forms in C# with cs-gui-builder online
+# Online software builder
+Create esaily functionnal apps with online software builder
 ![image](https://user-images.githubusercontent.com/71982379/214910945-b78bf1e9-7285-45f9-834d-3072b3be6888.png)
 
 ## Objectives
