@@ -8,6 +8,29 @@ function build_wpf(name, width, height, color)
 	content = zip.generate();
 	location.href="data:application/zip;base64," + content;
 }
+function build_xml(name, width, height, color)
+{
+	var privitemslist="";
+	for (var i = 0; i < gui_items.length; i++) {
+		var line=gui_items[i].split(';');
+		privitemslist+="private "+line[0]+" "+line[2]+";\n		"
+	  
+	  	// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000, 20px);
+	}
+	`<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".`+name+`Activity">
+
+    `+getitems(color, "xml")+`
+
+</androidx.constraintlayout.widget.ConstraintLayout>`
+
+}
 function build(name, width, height, color)
 {
 	// var buttonwidth="248";
@@ -49,7 +72,7 @@ using Microsoft.VisualBasic;
 
 namespace CSform
 {
-	//made with C# GUI builder (https://duckpvpteam.github.io/cs-gui-builder/)
+	//made with DT Application Builder (https://duckpvpteam.github.io/dtappbuilder/)
 	
     public class CSform : Form {
 		`+privitemslist+`

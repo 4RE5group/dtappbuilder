@@ -9,7 +9,7 @@ function get_import_input(name2, file2)
 	result = "not found";
 	importfile=file2.split("\r").join("");
 	lines = importfile.split("\n");
-	for (i = 0; i < lines.length; i++) {
+	for (i = 0; i < lines.length; i++) { 
 		if(lines[i] == undefined)
 		{}
 		else
@@ -42,20 +42,13 @@ function import_code()
 			// set porject name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
 			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
-			try{clickColor(0, -1, -1, 5);} catch (error) {}
+			clickColor(0, -1, -1, 5);
 			
 			windows_width=get_import_input("window_width", event.target.result);
 			windows_height=get_import_input("window_height", event.target.result);
 			
 			document.getElementById("window").style.width=windows_width;
 			document.getElementById("window").style.height=windows_height;
-			
-			// import items 
-			imported_items_list = get_import_input("items", event.target.result).split("//!//");
-			for (i = 0; i < imported_items_list.length; i++) { 
-				alert(imported_items_list[i]);
-			}
-			
 		}
 		reader.readAsText(file)
 	}
@@ -106,6 +99,10 @@ function export_code()
 	if(e.selectedIndex == 1)
 	{
 		build_wpf(name, width, height, cObj.toRgbString());
+	}
+	if(e.selectedIndex == 2)
+	{
+		build_xml(name, width, height, cObj.toRgbString());
 	}
 }
 
@@ -458,7 +455,7 @@ function hexToRgb(hex) {
     b: parseInt(result[3], 16)
   } : null;
 }
-function getitems(color)
+function getitems(color, type)
 {
 	var list="";
 	for (var i = 0; i < gui_items.length; i++) {
@@ -470,44 +467,112 @@ function getitems(color)
 		line[7]=(line[7] | 0);
 		elemname=line[1]+5;
 		// alert(elemname);
-		let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
-		
+		try
+		{
+			let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
+		}
+		catch(e)
+		{}
 		line[8]=(line[8] | 0);
 		// alert(fontSize);
 		if(line[0] == "Label")
 		{
-			list += `
-			//
-			// `+line[1]+`
-			//
-			`+line[2]+` = new `+line[0]+`();
-			`+line[2]+`.Name = "`+line[2]+`";
-			`+line[2]+`.Font = new Font("Arial", `+fontSize+`);
-			`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
-			`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
-			`+line[2]+`.Text = "`+line[3]+`";
-			`+line[2]+`.AutoSize = "true";
-			`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
-			`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
-			`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
+			if(type=="cs")
+			{
+				list += `
+				//
+				// `+line[1]+`
+				//
+				`+line[2]+` = new `+line[0]+`();
+				`+line[2]+`.Name = "`+line[2]+`";
+				`+line[2]+`.Font = new Font("Arial", `+fontSize+`);
+				`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
+				`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
+				`+line[2]+`.Text = "`+line[3]+`";
+				`+line[2]+`.AutoSize = "true";
+				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
+				`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
+				`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
+			}
+			if(type=="wpf")
+			{
+				
+			}
+			if(type=="xml")
+			{
+				list += `
+				<TextView
+			android:layout_width="`+line[4]+`dp"
+			android:layout_height="`+line[5]+`dp"
+			android:id="`+line[2]+`"
+			android:text="`+line[3]+`"/>`;
+			}
+		
 		}
 		if(line[0] == "RoundedButton")
 		{
-			
+			if(type=="cs")
+			{
+				
+			}
+			if(type=="wpf")
+			{
+				
+			}
+			if(type=="xml")
+			{
+				list += `
+				<Button
+			android:id="`+line[2]+`"
+			android:layout_width="`+line[4]+`dp"
+			android:layout_height="`+line[5]+`dp"
+			android:text="`+line[3]+`"/>`;
+			}
+		}
+		if(line[0] == "TextBox")
+		{
+			if(type=="cs")
+			{
+				
+			}
+			if(type=="wpf")
+			{
+				
+			}
+			if(type=="xml")
+			{
+				list += `<EditText
+			android:id="`+line[2]+`"
+			android:layout_height="`+line[5]+`dp"
+			android:layout_width="`+line[4]+`dp"
+			android:hint="Cost of Service"
+			android:inputType="text"/>`;
+			}
 		}
 		if(line[0] == "PictureBox")
 		{
-			list += `
-			//
-			// `+line[1]+`
-			//
-			`+line[2]+` = new `+line[0]+`();
-            `+line[2]+`.Name = "`+line[2]+`";
-			`+line[2]+`.ImageLocation = "`+line[3]+`";
-			`+line[2]+`.SizeMode = PictureBoxSizeMode.AutoSize;
-			`+line[2]+`.ClientSize = new Size(`+line[4]+`, `+line[5]+`);
-            `+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
-            `+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);`;
+			if(type=="cs")
+			{
+				list += `
+				//
+				// `+line[1]+`
+				//
+				`+line[2]+` = new `+line[0]+`();
+				`+line[2]+`.Name = "`+line[2]+`";
+				`+line[2]+`.ImageLocation = "`+line[3]+`";
+				`+line[2]+`.SizeMode = PictureBoxSizeMode.AutoSize;
+				`+line[2]+`.ClientSize = new Size(`+line[4]+`, `+line[5]+`);
+				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
+				`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);`;
+			}
+			if(type=="wpf")
+			{
+				
+			}
+			if(type=="xml")
+			{
+				
+			}
 		}
 		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000", 20px;
 	}

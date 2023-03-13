@@ -314,8 +314,8 @@
   padding-bottom: var(--dl-space-space-twounits);
   justify-content: space-between;
   background-color: black;
-  z-index: 100;
-  box-shadow: 2px 2px 5px black;
+  /* z-index: 100; */
+  /* box-shadow: 2px 2px 5px black; */
 }
 .index-image {
   width: 44px;
@@ -366,7 +366,7 @@
   justify-content: center;
 }
 .index-container04 {
-  box-shadow: 2px 2px 5px black;
+  /* box-shadow: 2px 2px 5px black; */
   flex: 0 0 auto;
   width: 30%;
   height: 100%;
@@ -377,7 +377,7 @@
   border-color: rgba(120, 120, 120, 0.4);
   border-style: dashed;
   border-width: 0px;
-  border-radius: var(--dl-radius-radius-radius8);
+  /* border-radius: var(--dl-radius-radius-radius8); */
   flex-direction: column;
   justify-content: flex-start;
   background-color: black;
