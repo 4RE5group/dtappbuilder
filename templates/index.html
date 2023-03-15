@@ -37,6 +37,7 @@
 
       }
     </style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
@@ -74,6 +75,24 @@
             />
           </a>
         </header>
+		<style>
+		.column {
+		  float: left;
+		  width: 24%;
+		  padding: 10px;
+		  margin: 10px;
+		}
+
+		/* Clear floats after the columns */
+		.row:after {
+		  content: "";
+		  display: table;
+		  clear: both;
+		}
+		.android-icon {
+		  content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABKElEQVR4nO2WsUoDQRCGt7awCj6MxJtJIUZIIyEzEa19h1gIgpb6EHmQzGgICN4LpI29KWwUBGWiKXLJmdvsFkH2g4Hbnf/2Y/fu4JzbZnBAR82ns911OctYNp5Y6R6V+hVyfRC6iyZu5a0dEBo3lC9Q+RKUcxR6tbJrEOpZzzKWdTEBoR4qf/1VlokqxQG1Qfmz8cD7IJ16UTift0ym3ZMo0sPR+R4qT3921KlnygfLO12Yn4Kc1oLFIHS97ohX1FW4WDn3F9NzsPj/A0IjVB7Oxxs831mVrVdK8cZQcXFcShJjOmpNLxdH+5yGKPQY8TteWK8yqPTiLRaauFAy5WMvudAEpNt0scAVx1ill8TegPDH7P9K+d2nFwwI3aLyGwjd+PQS7pdv5d/Umo4OdFIAAAAASUVORK5CYII=')
+		}
+		</style>
         <div class="index-container01">
           <div class="index-container15">
             <div class="index-container16">
@@ -139,7 +158,30 @@
 			<!-- nothin here -->
             </div>
           </div>
-        </div>
+		  <div style="width: 100%; height: 90vh; background-color: #404040; padding: 20px; text-align: center;">
+			<div class="row">
+			  <div class="column" style="background-color:#aaa;">
+				<div>
+					<img class="android-icon">
+					<h2>Sample template</h2>
+				</div>
+				<p>This is just a simple app</p>
+			  </div>
+			  <div class="column" style="background-color:#bbb;">
+				<h2>Column 2</h2>
+				<p>Some text..</p>
+			  </div>
+			  <div class="column" style="background-color:#bbb;">
+				<h2>Column 3</h2>
+				<p>Some text..</p>
+			  </div>
+			  <div class="column" style="background-color:#bbb;">
+				<h2>Column 4</h2>
+				<p>Some text..</p>
+			  </div>
+			</div>
+		  </div>
+		</div>
       </div>
     </div>
   </body>
