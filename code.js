@@ -12,8 +12,9 @@ iosPlatforms = ['iPhone', 'iPad', 'iPod'],
 os = null;
 
 if (/Android/.test(userAgent) || iosPlatforms.indexOf(platform) !== -1) {
-  document.getElementsByClassName("index-container").innerHTML="";
-  alert("This website don't works on phones");
+  document.getElementsByTagName("body")[0].style.display = "none";
+  alert(`This website don't works on phones
+Android app soon ;)`);
 }
   
 function get_import_input(name2, file2)
@@ -54,10 +55,35 @@ function import_code()
 			// set porject name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
 			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
-			clickColor(0, -1, -1, 5);
+			try
+			{
+				clickColor(0, -1, -1, 5);
+			}
+			catch(e)
+			{}
 			
 			windows_width=get_import_input("window_width", event.target.result);
 			windows_height=get_import_input("window_height", event.target.result);
+			
+			items=get_import_input("items", event.target.result);
+			item_list=items.split("///");
+			alert(item_list);
+			for (var i = 0; i < item_list.length; i++) {
+				line=item_list[i].split(';');
+				gui_items.push(item_list[i]);
+				rand=line[2].substring(0, line.length-1);
+				alert(rand);
+				if(line[0] == "Label")
+				{
+					const newdiv = document.createElement("div");
+					
+					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: ; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
+					document.getElementById("window").appendChild(newdiv);
+				}
+			  
+				// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000, 20px);
+			}
+			
 			
 			document.getElementById("window").style.width=windows_width;
 			document.getElementById("window").style.height=windows_height;
@@ -76,41 +102,61 @@ function export_code(build)
 	{
 		name="untitled";
 	}
+	let box = document.getElementById('window');
+	let width = box.offsetWidth;
+	let height = box.offsetHeight;
+		
+	c = document.getElementById("html5colorpicker").value;
+	cObj = w3color(c);
+	colorhex = cObj.toHexString();
+	r = cObj.red;
+	g = cObj.green;
+	b = cObj.blue;
+		
+	var matches = [];
+	var searchEles = document.getElementById("id2").children;
+	for(var i = 0; i < searchEles.length; i++) {
+		if(searchEles[i].tagName == 'SELECT' || searchEles.tagName == 'INPUT') {
+			if(searchEles[i].id.indexOf('q1_') == 0) {
+				matches.push(searchEles[i]);
+			}
+		}
+	}
+	
+	
+	
+	
+	var e = document.getElementById("export_option");
+	var value = e.value;
+	var text = e.options[e.selectedIndex].text;
 	
 	if(build == false) {
+		var itemlist="";
+		for (var i = 0; i < gui_items.length; i++) {
+			var line=gui_items[i];
+			if(i!=0)
+			{
+				itemlist+="///"+line;
+			}
+			else
+			{
+				itemlist=line;
+			}
+			
+		}
+		
+		
 		exported_code=`project_name: `+name+`
-project_type: android
-project_description: by 
-window_width: 500px
-window_height: 900px
-window_background: #323232
-items: `;
+project_type: `+value+`
+project_description: by ...
+window_width: `+width+`px
+window_height: `+height+`px
+window_background: `+cObj.toRgbString()+`
+items: `+itemlist;
 	downloadfile(name+".dtab", exported_code);
 	}
 	else
 	{
-	
-		let box = document.getElementById('window');
-		let width = box.offsetWidth;
-		let height = box.offsetHeight;
-		
-		c = document.getElementById("html5colorpicker").value;
-		cObj = w3color(c);
-		colorhex = cObj.toHexString();
-		r = cObj.red;
-		g = cObj.green;
-		b = cObj.blue;
-		
-		var matches = [];
-		var searchEles = document.getElementById("id2").children;
-		for(var i = 0; i < searchEles.length; i++) {
-			if(searchEles[i].tagName == 'SELECT' || searchEles.tagName == 'INPUT') {
-				if(searchEles[i].id.indexOf('q1_') == 0) {
-					matches.push(searchEles[i]);
-				}
-			}
-		}
-		
 		var e = document.getElementById("export_option");
 		var value = e.value;
 		type="error";
