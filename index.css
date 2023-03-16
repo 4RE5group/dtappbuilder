@@ -296,7 +296,7 @@
 .index-container {
   width: 100%;
   display: flex;
-  overflow: auto;
+  overflow: hidden;
   min-height: 100vh;
   align-items: flex-start;
   flex-direction: column;
@@ -504,7 +504,7 @@
 .index-container13 {
   flex: 0 0 auto;
   width: 40%;
-  height: 40%;
+  height: 3vh;
   display: flex;
   transition: 0.3s;
   align-items: center;
@@ -526,7 +526,7 @@
 .index-container14 {
   flex: 0 0 auto;
   width: 40%;
-  height: 40%;
+  height: 3vh;
   display: flex;
   transition: 0.3s;
   align-items: center;

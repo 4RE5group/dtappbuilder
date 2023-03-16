@@ -183,15 +183,24 @@ function clickColor(hex, seltop, selleft, html5) {
 				<option name="winform" value="winform">C# Windows Form</option>
 				<option name="wph" value="wph">C# WPH</option>
 				<option name="xml" value="wph">XML</option>
+				<option name="android" value="android">Android</option>
 			  </select>
 			  </div>
 			  <div style="width: 50%;height: 100%">
+			  <div style="display: flex; height: 5vh">
                 <div class="index-container13" onclick="import_code()">
                   <span class="index-text09">Import</span>
                 </div>
-                <div class="index-container14" onclick="export_code()">
-                  <span class="index-text10">Export</span>
+                
+			  </div>
+			  <div style="display: flex; height: 5vh;">
+				<div class="index-container14" onclick="export_code(true)">
+                  <span class="index-text10">Export Code</span>
                 </div>
+				<div class="index-container14" onclick="export_code(false)">
+                  <span class="index-text10">Export Project</span>
+                </div>
+			  </div>
 			  </div>
               </div>
             </div>

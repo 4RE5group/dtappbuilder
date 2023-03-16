@@ -31,7 +31,7 @@ function build_xml(name, width, height, color)
 </androidx.constraintlayout.widget.ConstraintLayout>`
 
 }
-function build(name, width, height, color)
+function build_winform(name, width, height, color)
 {
 	// var buttonwidth="248";
 	// var buttonheight="20";

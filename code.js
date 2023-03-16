@@ -4,6 +4,18 @@ let selected_elem;
 
 let gui_items = [];
 
+var userAgent = window.navigator.userAgent,
+platform = window.navigator.platform,
+macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+os = null;
+
+if (/Android/.test(userAgent) || iosPlatforms.indexOf(platform) !== -1) {
+  document.getElementsByClassName("index-container").innerHTML="";
+  alert("This website don't works on phones");
+}
+  
 function get_import_input(name2, file2)
 {
 	result = "not found";
@@ -57,55 +69,75 @@ function import_code()
 	
 	input.click();
 }
-function export_code()
+function export_code(build)
 {
-	
 	let name = document.getElementById('formname').value.split(" ").join("-");
 	if(name == "")
 	{
 		name="untitled";
 	}
 	
+	if(build == false) {
+		exported_code=`project_name: `+name+`
+project_type: android
+project_description: by 
+window_width: 500px
+window_height: 900px
+window_background: #323232
+items: `;
+	downloadfile(name+".dtab", exported_code);
+	}
+	else
+	{
 	
-	
-	let box = document.getElementById('window');
-	let width = box.offsetWidth;
-	let height = box.offsetHeight;
-	
-	c = document.getElementById("html5colorpicker").value;
-    cObj = w3color(c);
-    colorhex = cObj.toHexString();
-    r = cObj.red;
-    g = cObj.green;
-    b = cObj.blue;
-	
-	var matches = [];
-	var searchEles = document.getElementById("id2").children;
-	for(var i = 0; i < searchEles.length; i++) {
-		if(searchEles[i].tagName == 'SELECT' || searchEles.tagName == 'INPUT') {
-			if(searchEles[i].id.indexOf('q1_') == 0) {
-				matches.push(searchEles[i]);
+		let box = document.getElementById('window');
+		let width = box.offsetWidth;
+		let height = box.offsetHeight;
+		
+		c = document.getElementById("html5colorpicker").value;
+		cObj = w3color(c);
+		colorhex = cObj.toHexString();
+		r = cObj.red;
+		g = cObj.green;
+		b = cObj.blue;
+		
+		var matches = [];
+		var searchEles = document.getElementById("id2").children;
+		for(var i = 0; i < searchEles.length; i++) {
+			if(searchEles[i].tagName == 'SELECT' || searchEles.tagName == 'INPUT') {
+				if(searchEles[i].id.indexOf('q1_') == 0) {
+					matches.push(searchEles[i]);
+				}
 			}
 		}
-	}
-	
-	var e = document.getElementById("export_option");
-	var value = e.value;
-	
-	if(e.selectedIndex == 0)
-	{
-		build(name, width, height, cObj.toRgbString());
-	}
-	if(e.selectedIndex == 1)
-	{
-		build_wpf(name, width, height, cObj.toRgbString());
-	}
-	if(e.selectedIndex == 2)
-	{
-		build_xml(name, width, height, cObj.toRgbString());
+		
+		var e = document.getElementById("export_option");
+		var value = e.value;
+		type="error";
+		if(e.selectedIndex == 0)
+		{
+			type="winform";
+			build_winform(name, width, height, cObj.toRgbString());
+		}
+		if(e.selectedIndex == 1)
+		{
+			type="wpf";
+			build_wpf(name, width, height, cObj.toRgbString());
+		}
+		if(e.selectedIndex == 2)
+		{
+			type="xml";
+			build_xml(name, width, height, cObj.toRgbString());
+		}
+		if(e.selectedIndex == 3)
+		{
+			type="android";
+			build_android(name, width, height, cObj.toRgbString());
+		}
+		// if(build == true) {}
+		// return type;
 	}
 }
-
 function resize()
 {
 	let box = document.getElementById('window');
@@ -908,4 +940,21 @@ function convert_color_to_hex(color2) {
 	color=color.split("Yellow").join("#FFFF00");
 	color=color.split("YellowGreen").join("#9ACD32");
 	return color;
+}
+function render_elements(elem, list)
+{
+	elem.innerHTML = "";
+	
+	const map = new Map(Object.entries(JSON.parse(list)));
+	map.forEach((_value, key) => {
+		const map2 = new Map(Object.entries(map.get(key)));
+		id=map2.get('shildkey');
+		imageurl=map2.get('icon');
+		title=map2.get('title');
+		url="./download.html?id="+id
+		document.getElementById("recentapps").innerHTML += 
+		"<a href='"+url+"' class='streapp-link'><div class='streapp-container1'><img alt='image' src='"+imageurl+"' class='streapp-image'><span class='streapp-text'><span>"+title+"</span></span></div></a>";
+	})
+	
+	
 }
