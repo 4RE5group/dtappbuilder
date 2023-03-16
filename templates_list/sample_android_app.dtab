@@ -1,6 +1,6 @@
 project_name: Sample android app
-type: android
-description: sample android template for dtappbuilder
+project_type: android
+project_description: sample android template for dtappbuilder
 window_width: 500px
 window_height: 900px
 window_background: #323232
