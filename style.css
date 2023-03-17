@@ -1,3 +1,7 @@
+input::-webkit-color-swatch {
+    border: none;
+}
+
 select {
 	-webkit-appearance: button;
     -webkit-border-radius: 2px;

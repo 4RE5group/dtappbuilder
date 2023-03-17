@@ -116,7 +116,7 @@ function clickColor(hex, seltop, selleft, html5) {
 }
 </script>
 <script src="lib/MooTools-Core-1.6.0.js"></script>
-				<input type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ffffff" style="width:85%;">
+				<input style="padding: 0px; width: 100%" type="color" id="html5colorpicker" onchange="clickColor(0, -1, -1, 5)" value="#ffffff" style="width:85%;">
 				<p style="margin-bottom: 20px" id="colorrgbDIV">rgb(255, 255, 255)</p>
 				<!-- label1 edit -->
 				<div id="label1" style="display: none; text-align: center;">
@@ -178,7 +178,7 @@ function clickColor(hex, seltop, selleft, html5) {
 			  <h1 style="color: #ffffff" id="dimentions">0x0</h1>
 			  </div>
               <div class="index-container12">
-			  <div style="text-align: end;width: 50%;height: 100%">
+			  <div style="text-align: end;width: 50%;/* height: 100%; */justify-content: center;display: flex;">
 			  <select id="export_option">
 				<option name="winform" value="winform">C# Windows Form</option>
 				<option name="wph" value="wph">C# WPH</option>
@@ -265,8 +265,9 @@ function clickColor(hex, seltop, selleft, html5) {
                 </div>
               </div>
             </div>
-            <div class="index-container17">
-              <!-- nothin here -->
+            <div onclick="window.location='./templates'" class="index-container17">
+              <img style="width: 35px; height: 35px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAABCCAYAAADjVADoAAAACXBIWXMAAAsTAAALEwEAmpwYAAACbUlEQVR4nO3bS6gNYQDA8fFYyMKbFdLN87JSyNpjJSWSvHYuC4oS2VhIlBULC1uJFRZK1LW084okLIgNeZVnhJ+GT1Hmnpl7zL0zc75fzXbmm/85c+Y735yTJFEURVFUW5iONdiERRiadBJ0oRff/e0RViadAHPwWrY0zrakyTAEt7X2Gd1JU2GJ/E4kTYW9BULcT5oKxwqEeJk0FXYWCHEzaSrM+8ctM8vBpMlwJkeEF5iY1AlGY2yBbQpu9RHhUzqpKrjPdBs+GCc/C+fxUXWkl9zNdMo+UBFm441q2z4QIS6ovg8YX2aEYWH6Wwery/5grIueGOKXrTHELzFEEEMEMUQQQwQxRBBDBDFEEEP8lxAYimU4gOPYl64sVXSK/QRHsQP7cRZf2p5ioxs3Mg56OiyqVMG38AINz3iKdhhT+xuhC89bDCAr0kDb0u9XO0eIS+rhcpkRphVYXR5sq8oMsVZ9TC4zxGb1MaHMEIvVx8Ky1yIfq4cjpYVIYV2OQVThOcZ7zEzKhD34mjGAV1iuGh5gRh/nMTd9l7cbYwFO4V54kHMNh9LnBBWbYr9LL5PwI7RxmJTeWv+YD21oK0RfKhailfjtM4ghghgiiCHqFOJpWE+YHz7t03WQ7Xiog0JcxJiM/Y/ASR0Q4hZG5lgq7G16iBU5jzO3ySHeFvkbAu40NcT1gsc6V+UQI9oY2N2Cx7rSZojNpYVIpSfUz4F9ybpbZKyPtFpRb+Xns5jSYH0bg9ud8xgb24xwvtQIv2FXPxdpniU54Go7ETAqGSiYEP6Y1lNgW5pz3wsL7rcnLECXezlEURRFSef5AU+1oXVuuWPYAAAAAElFTkSuQmCC">
+			  <h2 style="color: white">Templates</h2>
             </div>
           </div>
         </div>
