@@ -10,7 +10,7 @@ macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
 windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
 iosPlatforms = ['iPhone', 'iPad', 'iPod'],
 os = null;
-
+// disable android and IOS cuz these devices have too small screens
 if (/Android/.test(userAgent) || iosPlatforms.indexOf(platform) !== -1) {
   document.getElementsByTagName("body")[0].style.display = "none";
   alert(`This website don't works on phones
@@ -27,7 +27,7 @@ function get_import_input(name2, file2)
 		{}
 		else
 		{
-			// console.log(lines[i]);
+			// get value from variable name 
 			if(lines[i].startsWith(name2+": "))
 			{
 				result=lines[i].replace(name2+": ", "");
@@ -43,6 +43,7 @@ function get_import_input(name2, file2)
 
 function import_code()
 {
+	//import file
 	var input = document.createElement('input');
 	input.type = 'file';
 	
@@ -50,9 +51,10 @@ function import_code()
 		var files = e.target.files;
 		var file = files[0];           
 		var reader = new FileReader();
+		// read file
 		reader.onload = function(event) 
 		{
-			// set porject name
+			// set project name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
 			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
 			try
@@ -61,47 +63,68 @@ function import_code()
 			}
 			catch(e)
 			{}
-			
+			//set window height
 			windows_width=get_import_input("window_width", event.target.result);
 			windows_height=get_import_input("window_height", event.target.result);
 			
 			items=get_import_input("items", event.target.result);
 			item_list=items.split("///");
-			alert(item_list);
+			// set window dimentions
+			document.getElementById("window").style.width=windows_width;
+			document.getElementById("window").style.height=windows_height;
 			for (var i = 0; i < item_list.length; i++) {
 				line=item_list[i].split(';');
 				gui_items.push(item_list[i]);
 				rand=line[2].substring(0, line.length-1);
-				alert(rand);
+				// display items
 				if(line[0] == "Label")
 				{
 					const newdiv = document.createElement("div");
 					
-					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: ; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
+					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: "+line[7]+"; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
 					document.getElementById("window").appendChild(newdiv);
+					//width
+					document.getElementById(rand).style.top=getDivPosition("id2")+line[7]+"px";
+					// height
+					document.getElementById(rand).style.left=getDivPosition2("id2")+line[8]+"px";
+
 				}
-			  
+				if(line[0] == "PictureBox")
+				{
+					const newdiv = document.createElement("div");
+					
+					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><img id='"+rand+5+"' style='font-size: ; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
+					document.getElementById("window").appendChild(newdiv);
+					//width
+					document.getElementById(rand).style.top=getDivPosition("id2")+line[7]+"px";
+					// height
+					document.getElementById(rand).style.left=getDivPosition2("id2")+line[8]+"px";
+
+				}
+				const collection = document.getElementsByClassName("draggable_div");
+				for (let i = 0; i < collection.length; i++) {
+					dragElement(collection[i]);
+					getDivPosition(rand);
+				}
 				// add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000, 20px);
 			}
-			
-			
-			document.getElementById("window").style.width=windows_width;
-			document.getElementById("window").style.height=windows_height;
 		}
 		reader.readAsText(file)
 	}
-
 	
 	
 	input.click();
 }
 function export_code(build)
 {
+	// sets name to untitled if null
 	let name = document.getElementById('formname').value.split(" ").join("-");
 	if(name == "")
 	{
 		name="untitled";
 	}
+	
+	//get elements
 	let box = document.getElementById('window');
 	let width = box.offsetWidth;
 	let height = box.offsetHeight;
@@ -125,7 +148,7 @@ function export_code(build)
 	
 	
 	
-	
+	//get export type
 	var e = document.getElementById("export_option");
 	var value = e.value;
 	var text = e.options[e.selectedIndex].text;
@@ -180,12 +203,11 @@ items: `+itemlist;
 			type="android";
 			build_android(name, width, height, cObj.toRgbString());
 		}
-		// if(build == true) {}
-		// return type;
 	}
 }
 function resize()
 {
+	// resize window if it's too wide or too tall
 	let box = document.getElementById('window');
 	let width = box.offsetWidth;
 	let height = box.offsetHeight;
@@ -193,58 +215,45 @@ function resize()
 	if(width > 1000)
 	{
 		document.getElementById('window').style.width = "1000px";
-		// console.log("too width");
 	}
 	if(height > 640)
 	{
 		document.getElementById('window').style.height = "640px";
-		// console.log("too height");
 	}
 	if(width < 350)
 	{
 		document.getElementById('window').style.width = "350px";
-		// console.log("not too width");
 	}
 	if(height < 200)
 	{
 		document.getElementById('window').style.height = "200px";
-		// console.log("not too height");
 	}
-	// console.log("width: "+width+" height: "+height);
 }
 
 function allowDrop(ev) {
+	//allow elements to be droped
 	ev.preventDefault();
 	ev.dataTransfer.dropEffect = "move";
-}
-
-function allowDelete(ev) {
-	ev.preventDefault();
-	ev.dataTransfer.dropEffect = "move";
-}
-function deletebin(ev, type) {
-	ev.preventDefault();
-	// id = ev.target.id;
-	console.log(id);
-	var elem = document.getElementById(id);
-    return elem.parentNode.removeChild(elem);
 }
 
 function drag(ev) {
+	//start dragging elements
 	id = ev.target.id;
-	// const rect = ev.target.getBoundingClientRect();
-
-    // offsetX = ev.clientX - rect.x;
-    // offsetY = ev.clientY - rect.y;
 }
 
 function add_item(type, id, randomname, name, width, height, color, top, left, backcolor)
 {
+	// add items to list
 	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left+";"+backcolor);
 }
 
 var rand;
 function set_elem(ev, type) {
+	const collection = document.getElementsByClassName("draggable_div");
+	for (let i = 0; i < collection.length; i++) {
+		dragElement(collection[i]);
+		getDivPosition(rand);
+	}
 	if(!selected_elem == "")
 	{
 		document.getElementById(selected_elem).style.border = "0px solid #257AFD"; 
@@ -305,51 +314,63 @@ function set_forecolor() {
 }
 function update_elem() {
 	for (var i = 0; i < gui_items.length; i++) {
-		// console.log(gui_items[i]+" > "+selected_elem);
 		if(gui_items[i].contains(selected_elem))
 		{
-			let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
-			// console.log(fontSize);
 			elmnt=document.getElementById(selected_elem);
 			var temp=gui_items[i];
 			temp=temp.replace('"', "'");
-			// alert(temp);
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
-			text=""+elmnt.textContent;
-			// console.log("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
-			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
-			// console.log(">> "+gui_items);
+			if(temp5[0] == "Label")
+			{
+				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
+			
+				text=""+elmnt.textContent;
+				add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
+			}
+			if(temp5[0] == "PictureBox")
+			{
+				alert("e");
+				// let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
+			
+				imagesrc=document.getElementById(elmnt.id+5).src;
+				alert(imagesrc);
+				add_item(temp5[0], elmnt.id, temp5[2], imagesrc, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
+			}
 		}
+	}
+	const collection = document.getElementsByClassName("draggable_div");
+	for (let i = 0; i < collection.length; i++) {
+		dragElement(collection[i]);
+		getDivPosition(rand);
 	}
 }
 function set_bar() {
+	// set left bar based on element's type
 	for (var i = 0; i < gui_items.length; i++) {
 		console.log(gui_items[i]);
 		if(gui_items[i].contains(selected_elem))
 		{
 			elmnt=document.getElementById(selected_elem+5);
-			// alert(elmnt.textContent);
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
-			// gui_items.splice(i,1);
 			
 			//hide edit divs
 			document.getElementById('label1').style.display="none";
 			document.getElementById('buttonedit').style.display="none";
 			document.getElementById('picturebox').style.display="none";
 			
-			
+			//titles and subtitles
 			if(temp5[0] == "Label")
 			{
 				document.getElementById('label1').style.display="block";
-				// console.log("channge inputs");
 				document.getElementById('label1_text').value=elmnt.textContent;
 				document.getElementById('label1_size').value=elmnt.style.fontSize;
 				document.getElementById('label1_size_range').textContent=elmnt.style.fontSize;
 				document.getElementById('label1_fore').value=elmnt.style.color;
 				document.getElementById('label1_back').value=elmnt.style.backgroundColor;
 			}
+			//button
 			if(temp5[0] == "RoundedButton")
 			{
 				document.getElementById('buttonedit').style.display="block";
@@ -359,6 +380,7 @@ function set_bar() {
 				document.getElementById('buttonedit_height_range').innerHTML=elmnt.style.height;
 				document.getElementById('buttonedit_height').value=elmnt.style.height;
 			}
+			// imageboxes
 			if(temp5[0] == "PictureBox")
 			{
 				document.getElementById('picturebox').style.display="block";
@@ -366,23 +388,20 @@ function set_bar() {
 				document.getElementById('picturebox_width').value=elmnt.style.width;
 				document.getElementById('picturebox_height').textContent=elmnt.style.height;
 			}
-			// console.log(temp5[0]+" "+temp5[1]);
-			// alert(temp5[0]+" "+temp5[1]);
 		}
 	}
 }
+// detect keyboard shortcuts
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     if (selected_elem != "" && evt.ctrlKey && evt.keyCode == 90) {
-        alert("Ctrl-Z");
+        alert("Ctrl-Z may be added soon ;)");
     }
-	if (selected_elem != "" && evt.keyCode == 8 || evt.keyCode == 46) {
+	if (selected_elem != "" && evt.keyCode == 46) {
         for (var i = 0; i < gui_items.length; i++) {
-			// console.log(gui_items[i]+" > "+selected_elem);
 			if(gui_items[i].contains(selected_elem))
 			{
 				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
-				// console.log(fontSize);
 				elmnt=document.getElementById(selected_elem);
 				elmnt.remove();
 				selected_elem="";
@@ -390,9 +409,17 @@ document.onkeydown = function(evt) {
 			}
 		}
     }
+	if(document.getElementById('templates_list').style.display == 'block' && evt.key === "Escape") 
+	{
+		document.getElementById('templates_list').style.display = 'none';
+	}
+	if(evt.keyCode == 72 && evt.altKey)
+	{
+		alert("need help?");
+	}
 };
 function drop(ev, type) {
-	
+	// on element dropped
 	ev.preventDefault();
 	
 	const alphabet = "abcdefghijklmnopqrstuvwxyz"
@@ -401,12 +428,12 @@ function drop(ev, type) {
 	rand = Math.random().toString().substr(2, 8);
 	if(!selected_elem == "")
 	{
+		// select visually an element
 		document.getElementById(selected_elem).style.border = "0px solid #257AFD"; 
 	}
 	if (id == "label")
 	{
 		const newdiv = document.createElement("div");
-		// newdiv.setAttribute("id", rand);
 		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: 40px; color: #000000; background-color: transparent'>Title</h1></div>";
 		ev.target.appendChild(newdiv);
@@ -416,18 +443,14 @@ function drop(ev, type) {
 			dragElement(collection[i]);
 			getDivPosition(rand);
 		}
-		// console.log(document.getElementById(rand).offsetWidth);
+		//trying to get numbers without komas
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		// console.log(temp1);
-		// console.log(temp2);
 		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "label2")
 	{
 		const newdiv = document.createElement("div");
-		// newdiv.setAttribute("id", rand);
 		
 		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h2 id='"+rand+5+"' style='color: #000000; background-color: transparent'>Subtitle</h2></div>";
@@ -441,8 +464,7 @@ function drop(ev, type) {
 		
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		// console.log(temp1);
-		// console.log(temp2);
+		
 		add_item("Label", rand+5, randomCharacter, "Subtitle", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
 		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
@@ -463,15 +485,12 @@ function drop(ev, type) {
 		
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		// console.log(temp1);
-		// console.log(temp2);
+		
 		add_item("PictureBox", rand+5, randomCharacter, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "addbutton")
 	{
 		const newdiv = document.createElement("div");
-		// newdiv.setAttribute("id", rand);
 		
 		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><button id='"+rand+5+"' style='width: 100px; height: 35px; color: #ffffff; background-color: #000000' name='"+rand+5+"'>Button</button></div>";
@@ -485,10 +504,8 @@ function drop(ev, type) {
 		
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		// console.log(temp1);
-		// console.log(temp2);
+		
 		add_item("RoundedButton", rand+5, randomCharacter, "Button", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
 	}
 	if (id == "textbox")
 	{
@@ -503,20 +520,11 @@ function drop(ev, type) {
 		ev.target.appendChild(newdiv);
 	}
 	set_bar();
-	// var tooltip = document.className('tooltip');
-
-	// tooltip.addEventListener('hover', function() {
-	  // if (this.classList.contains('active')) {
-		// this.classList.remove('active');
-	  // } else {
-		// this.classList.add('active');
-	  // }
-	  
-	// });
 	document.getElementById(rand).style.border = "3px solid #257AFD"; 
 }
 function getitemscontrols()
 {
+	// get c# controls code list
 	var result="";
 	for (var i = 0; i < gui_items.length; i++) {
 		var line=gui_items[i].split(';');
@@ -544,15 +552,14 @@ function getitems(color, type)
 		line[9]=convert_color_to_hex(line[9]);
 		line[7]=(line[7] | 0);
 		elemname=line[1]+5;
-		// alert(elemname);
 		try
 		{
+			//get font size
 			let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
 		}
 		catch(e)
 		{}
 		line[8]=(line[8] | 0);
-		// alert(fontSize);
 		if(line[0] == "Label")
 		{
 			if(type=="cs")
@@ -986,21 +993,4 @@ function convert_color_to_hex(color2) {
 	color=color.split("Yellow").join("#FFFF00");
 	color=color.split("YellowGreen").join("#9ACD32");
 	return color;
-}
-function render_elements(elem, list)
-{
-	elem.innerHTML = "";
-	
-	const map = new Map(Object.entries(JSON.parse(list)));
-	map.forEach((_value, key) => {
-		const map2 = new Map(Object.entries(map.get(key)));
-		id=map2.get('shildkey');
-		imageurl=map2.get('icon');
-		title=map2.get('title');
-		url="./download.html?id="+id
-		document.getElementById("recentapps").innerHTML += 
-		"<a href='"+url+"' class='streapp-link'><div class='streapp-container1'><img alt='image' src='"+imageurl+"' class='streapp-image'><span class='streapp-text'><span>"+title+"</span></span></div></a>";
-	})
-	
-	
 }
