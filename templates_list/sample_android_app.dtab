@@ -1,7 +1,8 @@
 project_name: Sample android app
 project_type: android
+project_image: https://www.instakotlin.com/wp-content/uploads/2019/11/Login-Cover2-600x450.png
 project_description: sample android template for dtappbuilder
 window_width: 350px
 window_height: 640px
 window_background: #323232
-items: hrtgesq;rhtegszfq;kutjyrhsgesf;ukyutejsrhbdqs;kuytjfrhdg;skutjynfg;bdtyjsrfhd;sdtyjfhsdw;d
+items: PictureBox;74062469;74062469;;175;172;;88;137;transparent///RoundedButton;82750334;82750334;MyButton;106;41;rgb(255, 255, 255);124;491;rgb(0, 0, 0)///Label;01500121;01500121;Sample android app;336;45;rgb(0, 0, 0);5;0;transparent///Label;03256118;03256118;By duckpvpteam;244;39;orange;103;47;transparent
