@@ -321,7 +321,7 @@ function update_elem() {
 			temp=temp.replace('"', "'");
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
-			if(temp5[0] == "Label")
+			if(temp5[0] == "Label" || temp5[0] == "RoundedButton")
 			{
 				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
 			
@@ -330,12 +330,8 @@ function update_elem() {
 			}
 			if(temp5[0] == "PictureBox")
 			{
-				alert("e");
-				// let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
-			
 				imagesrc=document.getElementById(elmnt.id+5).src;
-				alert(imagesrc);
-				add_item(temp5[0], elmnt.id, temp5[2], imagesrc, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
+				add_item(temp5[0], elmnt.id, temp5[2], imagesrc, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, imagesrc);
 			}
 		}
 	}
