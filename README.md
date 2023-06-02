@@ -4,7 +4,7 @@ Create esaily functionnal apps with DuckpvpTeam Application Builder
 
 ## Objectives
 - [x] Complete ![c#](https://cdn.discordapp.com/emojis/1012329912012644424.webp?size=32&quality=lossless) code builder
-- [ ] Add template system
+- [x] Add template system
 - [ ] Add python flask GUI builder
 - [ ] Add android app builder
 - [ ] Add other language and libs gui generator
