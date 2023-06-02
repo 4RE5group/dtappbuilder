@@ -4,6 +4,7 @@ let selected_elem;
 
 let gui_items = [];
 
+
 var userAgent = window.navigator.userAgent,
 platform = window.navigator.platform,
 macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
@@ -247,6 +248,18 @@ function add_item(type, id, randomname, name, width, height, color, top, left, b
 	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left+";"+backcolor);
 }
 
+function setup_elements()
+{
+	document.getElementById("controls_list").innerHTML+=`
+<div class="app-component-container app-component-root-class-name">
+	<div id="addbutton" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+		<img alt="image" src="./favicon.png" class="app-component-image" />
+        <h1 class="app-component-text"><span>Button</span></h1>
+    </div>
+</div>`;
+}
+
+
 var rand;
 function set_elem(ev, type) {
 	const collection = document.getElementsByClassName("draggable_div");
@@ -263,54 +276,6 @@ function set_elem(ev, type) {
 	// selected_elem=ev.target.id;
 	console.log(selected_elem);
 	set_bar();
-}
-function set_text() {
-	document.getElementById(selected_elem+5).textContent=document.getElementById("label1_text").value;
-	update_elem();
-}
-function set_textsize () {
-	document.getElementById('label1_size_range').textContent=document.getElementById("label1_size").value;
-	
-	let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize;
-	document.getElementById(selected_elem+5).style.fontSize = document.getElementById("label1_size").value + 'px';
-	
-	update_elem();
-}
-function set_backcolor() {
-	document.getElementById(selected_elem+5).style.backgroundColor=document.getElementById("label1_back").value;
-	update_elem();
-}
-function set_src() {
-	document.getElementById(selected_elem+5).src=document.getElementById("picturebox_url").value;
-	update_elem();
-}
-function set_width_button() {
-	document.getElementById(selected_elem+5).style.width=document.getElementById("buttonedit_width").value+"px";
-	document.getElementById("buttonedit_width_range").innerHTML=document.getElementById("buttonedit_width").value;
-	update_elem();
-}
-function set_height_button() {
-	document.getElementById(selected_elem+5).style.height=document.getElementById("buttonedit_height").value+"px";
-	document.getElementById("buttonedit_height_range").innerHTML=document.getElementById("buttonedit_height").value;
-	update_elem();
-}
-function set_button_text () {
-	document.getElementById(selected_elem+5).innerHTML=document.getElementById("buttonedit_text").value;
-	update_elem();
-}
-function set_width() {
-	document.getElementById(selected_elem+5).style.width=document.getElementById("picturebox_width").value+"px";
-	document.getElementById("picturebox_width_range").innerHTML=document.getElementById("picturebox_width").value;
-	update_elem();
-}
-function set_height() {
-	document.getElementById(selected_elem+5).style.height=document.getElementById("picturebox_height").value+"px";
-	document.getElementById("picturebox_height_range").innerHTML=document.getElementById("picturebox_height").value;
-	update_elem();
-}
-function set_forecolor() {
-	document.getElementById(selected_elem+5).style.color=document.getElementById("label1_fore").value;
-	update_elem();
 }
 function update_elem() {
 	for (var i = 0; i < gui_items.length; i++) {
@@ -387,33 +352,7 @@ function set_bar() {
 		}
 	}
 }
-// detect keyboard shortcuts
-document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    if (selected_elem != "" && evt.ctrlKey && evt.keyCode == 90) {
-        alert("Ctrl-Z may be added soon ;)");
-    }
-	if (selected_elem != "" && evt.keyCode == 46) {
-        for (var i = 0; i < gui_items.length; i++) {
-			if(gui_items[i].contains(selected_elem))
-			{
-				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
-				elmnt=document.getElementById(selected_elem);
-				elmnt.remove();
-				selected_elem="";
-				gui_items.splice(i, 1);
-			}
-		}
-    }
-	if(document.getElementById('templates_list').style.display == 'block' && evt.key === "Escape") 
-	{
-		document.getElementById('templates_list').style.display = 'none';
-	}
-	if(evt.keyCode == 72 && evt.altKey)
-	{
-		alert("need help?");
-	}
-};
+
 function drop(ev, type) {
 	// on element dropped
 	ev.preventDefault();
@@ -422,6 +361,10 @@ function drop(ev, type) {
 	const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
 
 	rand = Math.random().toString().substr(2, 8);
+	new_element(rand);
+}
+function new_element(rand)
+{
 	if(!selected_elem == "")
 	{
 		// select visually an element
@@ -518,17 +461,6 @@ function drop(ev, type) {
 	set_bar();
 	document.getElementById(rand).style.border = "3px solid #257AFD"; 
 }
-function getitemscontrols()
-{
-	// get c# controls code list
-	var result="";
-	for (var i = 0; i < gui_items.length; i++) {
-		var line=gui_items[i].split(';');
-		result+="this.Controls.Add("+line[2]+");\n			";
-	}
-	
-	return result;
-}
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -536,128 +468,6 @@ function hexToRgb(hex) {
     g: parseInt(result[2], 16),
     b: parseInt(result[3], 16)
   } : null;
-}
-function getitems(color, type)
-{
-	var list="";
-	for (var i = 0; i < gui_items.length; i++) {
-		var line=gui_items[i].split(';');
-		line[6]=line[6].split('transparent').join(color);
-		line[9]=line[9].split('transparent').join(color);
-		line[6]=convert_color_to_hex(line[6]);
-		line[9]=convert_color_to_hex(line[9]);
-		line[7]=(line[7] | 0);
-		elemname=line[1]+5;
-		try
-		{
-			//get font size
-			let fontSize = window.getComputedStyle(document.getElementById(elemname)).fontSize.split("px").join('');
-		}
-		catch(e)
-		{}
-		line[8]=(line[8] | 0);
-		if(line[0] == "Label")
-		{
-			if(type=="cs")
-			{
-				list += `
-				//
-				// `+line[1]+`
-				//
-				`+line[2]+` = new `+line[0]+`();
-				`+line[2]+`.Name = "`+line[2]+`";
-				`+line[2]+`.Font = new Font("Arial", `+fontSize+`);
-				`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
-				`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
-				`+line[2]+`.Text = "`+line[3]+`";
-				`+line[2]+`.AutoSize = "true";
-				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
-				`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
-				`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
-			}
-			if(type=="wpf")
-			{
-				
-			}
-			if(type=="xml")
-			{
-				list += `
-				<TextView
-			android:layout_width="`+line[4]+`dp"
-			android:layout_height="`+line[5]+`dp"
-			android:id="`+line[2]+`"
-			android:text="`+line[3]+`"/>`;
-			}
-		
-		}
-		if(line[0] == "RoundedButton")
-		{
-			if(type=="cs")
-			{
-				
-			}
-			if(type=="wpf")
-			{
-				
-			}
-			if(type=="xml")
-			{
-				list += `
-				<Button
-			android:id="`+line[2]+`"
-			android:layout_width="`+line[4]+`dp"
-			android:layout_height="`+line[5]+`dp"
-			android:text="`+line[3]+`"/>`;
-			}
-		}
-		if(line[0] == "TextBox")
-		{
-			if(type=="cs")
-			{
-				
-			}
-			if(type=="wpf")
-			{
-				
-			}
-			if(type=="xml")
-			{
-				list += `<EditText
-			android:id="`+line[2]+`"
-			android:layout_height="`+line[5]+`dp"
-			android:layout_width="`+line[4]+`dp"
-			android:hint="Cost of Service"
-			android:inputType="text"/>`;
-			}
-		}
-		if(line[0] == "PictureBox")
-		{
-			if(type=="cs")
-			{
-				list += `
-				//
-				// `+line[1]+`
-				//
-				`+line[2]+` = new `+line[0]+`();
-				`+line[2]+`.Name = "`+line[2]+`";
-				`+line[2]+`.ImageLocation = "`+line[3]+`";
-				`+line[2]+`.SizeMode = PictureBoxSizeMode.AutoSize;
-				`+line[2]+`.ClientSize = new Size(`+line[4]+`, `+line[5]+`);
-				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
-				`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);`;
-			}
-			if(type=="wpf")
-			{
-				
-			}
-			if(type=="xml")
-			{
-				
-			}
-		}
-		// add_item("title", rand+5, random, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5)), "#000000", 20px;
-	}
-	return list;
 }
 function downloadfile(filename, text) {
   var element = document.createElement('a');

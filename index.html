@@ -77,6 +77,9 @@
   </head>
   <script src="./build_types.js"></script>
   <script src="./code.js"></script>
+  <script src="./keyboard.js"></script>
+  <script src="./controls.js"></script>
+  <script src="./window.js"></script>
  
   <body onload="document.getElementById('id2').style.backgroundColor = document.getElementById('html5colorpicker').value;">
     <div>
@@ -212,9 +215,8 @@ function clickColor(hex, seltop, selleft, html5) {
 			  <div style="text-align: end;width: 50%;/* height: 100%; */justify-content: center;display: flex;">
 			  <select id="export_option">
 				<option name="winform" value="winform">C# Windows Form</option>
-				<option name="wph" value="wph">C# WPH</option>
-				<option name="xml" value="wph">XML</option>
-				<option name="android" value="android">Android</option>
+				<option name="wpf" value="wpf">WPF (xaml)</option>
+				<option name="android" value="wpf">Android (XML)</option>
 			  </select>
 			  </div>
 			  <div style="width: 50%;height: 100%">
@@ -237,7 +239,7 @@ function clickColor(hex, seltop, selleft, html5) {
             </div>
           </div>
           <div class="index-container15">
-            <div class="index-container16">
+            <div id="controls_list" class="index-container16">
               <h1 class="index-text11">Controls</h1>
               <div
                 class="app-component-container app-component-root-class-name"
@@ -283,9 +285,7 @@ function clickColor(hex, seltop, selleft, html5) {
                   <h1 class="app-component-text"><span>TextBox</span></h1>
                 </div>
               </div>
-              <div
-                class="app-component-container app-component-root-class-name"
-              >
+              <div class="app-component-container app-component-root-class-name">
                 <div id="addbutton" draggable="true" ondragstart="drag(event)" class="app-component-container1">
                   <img
                     alt="image"
@@ -295,6 +295,12 @@ function clickColor(hex, seltop, selleft, html5) {
                   <h1 class="app-component-text"><span>Button</span></h1>
                 </div>
               </div>
+			  <div class="app-component-container app-component-root-class-name">
+				<div id="addrectangle" draggable="true" ondragstart="drag(event)" class="app-component-container1">
+					<img alt="image" src="./favicon.png" class="app-component-image" />
+					<h1 class="app-component-text"><span>Rectangle</span></h1>
+				</div>
+			</div>
             </div>
             <div onclick="if(document.getElementById('templates_list').style.display === 'none'){document.getElementById('templates_list').style.display = 'block';}else{document.getElementById('templates_list').style.display = 'none';}" class="index-container17">
               <img style="width: 35px; height: 35px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAABCCAYAAADjVADoAAAACXBIWXMAAAsTAAALEwEAmpwYAAACbUlEQVR4nO3bS6gNYQDA8fFYyMKbFdLN87JSyNpjJSWSvHYuC4oS2VhIlBULC1uJFRZK1LW084okLIgNeZVnhJ+GT1Hmnpl7zL0zc75fzXbmm/85c+Y735yTJFEURVFUW5iONdiERRiadBJ0oRff/e0RViadAHPwWrY0zrakyTAEt7X2Gd1JU2GJ/E4kTYW9BULcT5oKxwqEeJk0FXYWCHEzaSrM+8ctM8vBpMlwJkeEF5iY1AlGY2yBbQpu9RHhUzqpKrjPdBs+GCc/C+fxUXWkl9zNdMo+UBFm441q2z4QIS6ovg8YX2aEYWH6Wwery/5grIueGOKXrTHELzFEEEMEMUQQQwQxRBBDBDFEEEP8lxAYimU4gOPYl64sVXSK/QRHsQP7cRZf2p5ioxs3Mg56OiyqVMG38AINz3iKdhhT+xuhC89bDCAr0kDb0u9XO0eIS+rhcpkRphVYXR5sq8oMsVZ9TC4zxGb1MaHMEIvVx8Ky1yIfq4cjpYVIYV2OQVThOcZ7zEzKhD34mjGAV1iuGh5gRh/nMTd9l7cbYwFO4V54kHMNh9LnBBWbYr9LL5PwI7RxmJTeWv+YD21oK0RfKhailfjtM4ghghgiiCHqFOJpWE+YHz7t03WQ7Xiog0JcxJiM/Y/ASR0Q4hZG5lgq7G16iBU5jzO3ySHeFvkbAu40NcT1gsc6V+UQI9oY2N2Cx7rSZojNpYVIpSfUz4F9ybpbZKyPtFpRb+Xns5jSYH0bg9ud8xgb24xwvtQIv2FXPxdpniU54Go7ETAqGSiYEP6Y1lNgW5pz3wsL7rcnLECXezlEURRFSef5AU+1oXVuuWPYAAAAAElFTkSuQmCC">
@@ -347,5 +353,10 @@ function clickColor(hex, seltop, selleft, html5) {
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="https://deno.land/x/zipjs/index.js"></script>
+	<script>
+	  // the zip API is in the `zip` global variable
+	  // ...
+	</script>
   </body>
 </html>
