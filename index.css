@@ -372,7 +372,7 @@
   height: 100%;
   display: flex;
   padding: var(--dl-space-space-unit);
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   align-items: center;
   border-color: rgba(120, 120, 120, 0.4);
   border-style: dashed;

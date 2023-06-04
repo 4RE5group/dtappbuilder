@@ -3,7 +3,8 @@ let offsetY;
 let selected_elem;
 
 let gui_items = [];
-
+coloractive="#16953a";
+colorinactive="#f95151";
 
 var userAgent = window.navigator.userAgent,
 platform = window.navigator.platform,
@@ -55,6 +56,9 @@ function import_code()
 		// read file
 		reader.onload = function(event) 
 		{
+			document.getElementById("id2").innerHTML="";
+			gui_items=[];
+			selected_elem="";
 			// set project name
 			document.getElementById("formname").value=get_import_input("project_name", event.target.result);
 			document.getElementById("html5colorpicker").value=get_import_input("window_background", event.target.result);
@@ -78,29 +82,18 @@ function import_code()
 				gui_items.push(item_list[i]);
 				rand=line[2].substring(0, line.length-1);
 				// display items
+				alert(line);
 				if(line[0] == "Label")
 				{
-					const newdiv = document.createElement("div");
-					
-					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: "+line[7]+"; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
-					document.getElementById("window").appendChild(newdiv);
-					//width
-					document.getElementById(rand).style.top=getDivPosition("id2")+line[7]+"px";
-					// height
-					document.getElementById(rand).style.left=getDivPosition2("id2")+line[8]+"px";
-
+					new_element(rand, "label", line[2], line);
+				}
+				if(line[0] == "Label2")
+				{
+					new_element(rand, "label2", line[2], line);
 				}
 				if(line[0] == "PictureBox")
 				{
-					const newdiv = document.createElement("div");
-					
-					newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><img id='"+rand+5+"' style='font-size: ; color: "+line[6]+"; background-color: "+line[9]+"'>"+line[3]+"</h1></div>";
-					document.getElementById("window").appendChild(newdiv);
-					//width
-					document.getElementById(rand).style.top=getDivPosition("id2")+line[7]+"px";
-					// height
-					document.getElementById(rand).style.left=getDivPosition2("id2")+line[8]+"px";
-
+					new_element(rand, "pic", line[2], line);
 				}
 				const collection = document.getElementsByClassName("draggable_div");
 				for (let i = 0; i < collection.length; i++) {
@@ -242,10 +235,10 @@ function drag(ev) {
 	id = ev.target.id;
 }
 
-function add_item(type, id, randomname, name, width, height, color, top, left, backcolor)
+function add_item(type, id, randomname, name, width, height, color, top, left, backcolor, fontsize)
 {
 	// add items to list
-	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left+";"+backcolor);
+	gui_items.push(type+";"+id+";"+randomname+";"+name+";"+width+";"+height+";"+color+";"+top+";"+left+";"+backcolor+";"+fontsize);
 }
 
 function setup_elements()
@@ -288,15 +281,15 @@ function update_elem() {
 			gui_items.splice(i,1);
 			if(temp5[0] == "Label" || temp5[0] == "RoundedButton")
 			{
-				let fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join('');
-			
-				text=""+elmnt.textContent;
-				add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, fontSize);
+				fontSize = window.getComputedStyle(document.getElementById(selected_elem+5)).fontSize.split("px").join("");
+				alert("'"+fontSize+"'");
+				text=elmnt.textContent;
+				add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, convert_color_to_hex(document.getElementById(elmnt.id+5).style.color), getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), convert_color_to_hex(document.getElementById(elmnt.id+5).style.backgroundColor), fontSize);
 			}
 			if(temp5[0] == "PictureBox")
 			{
 				imagesrc=document.getElementById(elmnt.id+5).src;
-				add_item(temp5[0], elmnt.id, temp5[2], imagesrc, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), document.getElementById(elmnt.id+5).style.backgroundColor, imagesrc);
+				add_item(temp5[0], elmnt.id, temp5[2], imagesrc, elmnt.offsetWidth, elmnt.offsetHeight, convert_color_to_hex(document.getElementById(elmnt.id+5).style.color), getDivPosition(elmnt.id+5), getDivPosition2(elmnt.id+5), convert_color_to_hex(document.getElementById(elmnt.id+5).style.backgroundColor), imagesrc);
 			}
 		}
 	}
@@ -352,7 +345,40 @@ function set_bar() {
 		}
 	}
 }
+highlighted=false;
+function highlight_all()
+{
+	if(highlighted)
+	{
+		document.getElementById("highlight_img").src="public/assets/highlight.png";
+		document.getElementById("highlight_div").style.color=colorinactive;
+		var x = document.getElementById("id2").querySelectorAll("div"); 
 
+		for (i = 0; i < x.length; i++)
+		{
+			if(x[i].offsetWidth != "4px" && x[i].id != selected_elem)
+			{
+				x[i].style.border = "0px solid #ff0000";  
+			}
+		}
+		highlighted=false;
+	}
+	else
+	{
+		document.getElementById("highlight_img").src="public/assets/highlight2.png";
+		document.getElementById("highlight_div").style.color=coloractive;
+		var x = document.getElementById("id2").querySelectorAll("div"); 
+
+		for (i = 0; i < x.length; i++)
+		{
+			if(x[i].style.width != "4px" && x[i].id != selected_elem)
+			{
+				x[i].style.border = "2px solid #ff0000";  
+			}
+		}
+		highlighted=true;
+	}
+}
 function drop(ev, type) {
 	// on element dropped
 	ev.preventDefault();
@@ -361,21 +387,31 @@ function drop(ev, type) {
 	const randomCharacter = alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)]+alphabet[Math.floor(Math.random() * alphabet.length)];
 
 	rand = Math.random().toString().substr(2, 8);
-	new_element(rand);
+	new_element(rand, id, randomCharacter);
 }
-function new_element(rand)
+function new_element(rand, elid=id, randomCharacter, data="")
 {
 	if(!selected_elem == "")
 	{
 		// select visually an element
 		document.getElementById(selected_elem).style.border = "0px solid #257AFD"; 
 	}
-	if (id == "label")
+	if (elid == "label")
 	{
 		const newdiv = document.createElement("div");
+		newdiv.style.display="contents";
 		
-		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: 40px; color: #000000; background-color: transparent'>Title</h1></div>";
-		ev.target.appendChild(newdiv);
+		// alert("data: '"+data+"'");
+		if(data=="")
+		{
+			newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: 40px; color: #000000; background-color: transparent'>Title</h1></div>";
+		}
+		else
+		{
+			fontsize=data[10];
+			newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='top: "+(parseInt(Number(getDivPosition("id2")))+parseInt(Number(data[7])))+"px; left: "+(parseInt(Number(getDivPosition2("id2")))+parseInt(Number(data[8])))+"px;background-color: transparent; margin-bottom: 5px;'><h1 id='"+rand+5+"' style='font-size: "+fontsize+"; color: "+data[9]+"; background-color: "+data[6]+"'>"+data[3]+"</h1></div>";
+		}
+		document.getElementById("id2").appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
 		for (let i = 0; i < collection.length; i++) {
@@ -385,15 +421,18 @@ function new_element(rand)
 		//trying to get numbers without komas
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
-		add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
+		if(data=="")
+		{
+			add_item("Label", rand+5, randomCharacter, "Title", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000", 40);
+		}
 	}
-	if (id == "label2")
+	if (elid == "label2")
 	{
 		const newdiv = document.createElement("div");
+		newdiv.style.display="contents";
 		
-		
-		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h2 id='"+rand+5+"' style='color: #000000; background-color: transparent'>Subtitle</h2></div>";
-		ev.target.appendChild(newdiv);
+		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><h2 id='"+rand+5+"' style='font-size: 30px; color: #000000; background-color: transparent'>Subtitle</h2></div>";
+		document.getElementById("id2").appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
 		for (let i = 0; i < collection.length; i++) {
@@ -404,17 +443,17 @@ function new_element(rand)
 		let temp1=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		let temp2=(getDivPosition(rand+5) - getDivPosition("id2")).toString().split('.');
 		
-		add_item("Label", rand+5, randomCharacter, "Subtitle", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
-		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000);
+		add_item("Label", rand+5, randomCharacter, "Subtitle", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000", 30);
+		// console.log("title", rand+5, "Title", 248, 20, "#ffffff", getDivPosition(rand+5), getDivPosition2(rand+5), #000000, fontsize);
 	}
-	if (id == "pic")
+	if (elid == "pic")
 	{
 		const newdiv = document.createElement("div");
-		// newdiv.setAttribute("id", rand);
+		newdiv.style.display="contents";
 		
 		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><img id='"+rand+5+"' style='width: 50px; height: 50px; background-color: transparent' src='https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png'></img></div>";
-		ev.target.appendChild(newdiv);
+		document.getElementById("id2").appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
 		for (let i = 0; i < collection.length; i++) {
@@ -427,13 +466,13 @@ function new_element(rand)
 		
 		add_item("PictureBox", rand+5, randomCharacter, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
 	}
-	if (id == "addbutton")
+	if (elid == "addbutton")
 	{
 		const newdiv = document.createElement("div");
-		
+		newdiv.style.display="contents";
 		
 		newdiv.innerHTML += "<div id='"+rand+"' class='draggable_div' onclick='set_elem(event)' style='background-color: transparent; margin-bottom: 5px;'><button id='"+rand+5+"' style='width: 100px; height: 35px; color: #ffffff; background-color: #000000' name='"+rand+5+"'>Button</button></div>";
-		ev.target.appendChild(newdiv);
+		document.getElementById("id2").appendChild(newdiv);
 		
 		const collection = document.getElementsByClassName("draggable_div");
 		for (let i = 0; i < collection.length; i++) {
@@ -446,9 +485,10 @@ function new_element(rand)
 		
 		add_item("RoundedButton", rand+5, randomCharacter, "Button", 248, 20, "#ffffff", temp1[0], temp2[0], "#000000");
 	}
-	if (id == "textbox")
+	if (elid == "textbox")
 	{
 		const newdiv = document.createElement("div");
+		newdiv.style.display="contents";
 		newdiv.setAttribute("id", rand);
 		const newbut = document.createElement("textbox");
 		newbut.setAttribute("placeholder", "TextBox");
@@ -456,9 +496,12 @@ function new_element(rand)
 		newbut.setAttribute("heigth", "50px");
 					
 		newdiv.appendChild(newbut);
-		ev.target.appendChild(newdiv);
+		document.getElementById("id2").appendChild(newdiv);
 	}
-	set_bar();
+	if(!selected_elem=="")
+	{
+		set_bar();
+	}
 	document.getElementById(rand).style.border = "3px solid #257AFD"; 
 }
 function hexToRgb(hex) {
@@ -585,22 +628,22 @@ function dragElement(elmnt) {
 	elmnt.style.left = (getDivPosition2(elmnt.id) - pos1) + "px";
 	
 	//cant go less than window
-	if((getDivPosition(elmnt.id) - pos2) <= getDivPosition("id2"))
+	if((parseInt(Number(getDivPosition(elmnt.id))) - pos2) <= parseInt(Number(getDivPosition("id2"))))
 	{
-		elmnt.style.top = getDivPosition("id2") + "px";
+		elmnt.style.top = parseInt(Number(getDivPosition("id2"))) + "px";
 	}
-	if((getDivPosition2(elmnt.id) - pos1) <= getDivPosition2("id2"))
+	if((parseInt(Number(getDivPosition2(elmnt.id))) - pos1) <= parseInt(Number(getDivPosition2("id2"))))
 	{
-		elmnt.style.left = getDivPosition2("id2") + "px";
+		elmnt.style.left = parseInt(Number(getDivPosition2("id2"))) + "px";
 	}
 	
-	if((getDivPosition(elmnt.id) - pos2) >= getDivPosition("id2")+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25)
+	if((parseInt(Number(getDivPosition(elmnt.id))) - pos2) >= parseInt(Number(getDivPosition("id2")))+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25)
 	{
-		elmnt.style.top = getDivPosition("id2")+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25 + "px";
+		elmnt.style.top = parseInt(Number(getDivPosition("id2")))+document.getElementById("id2").offsetHeight-elmnt.offsetHeight-25 + "px";
 	}
-	if((getDivPosition2(elmnt.id) - pos1) >= getDivPosition2("id2")+document.getElementById("id2").offsetWidth-elmnt.offsetWidth)
+	if((parseInt(Number(getDivPosition2(elmnt.id))) - pos1) >= getDivPosition2("id2")+document.getElementById("id2").offsetWidth-elmnt.offsetWidth)
 	{
-		elmnt.style.left = getDivPosition2("id2")+document.getElementById("id2").offsetWidth-elmnt.offsetWidth + "px";
+		elmnt.style.left = parseInt(Number(getDivPosition2("id2")))+document.getElementById("id2").offsetWidth-elmnt.offsetWidth + "px";
 	}
 	
 	
@@ -616,8 +659,8 @@ function dragElement(elmnt) {
 			var temp=gui_items[i];
 			var temp5=temp.split(';');
 			gui_items.splice(i,1);
-			text=""+elmnt.textContent;
-			add_item(temp5[0], elmnt.id, temp5[2], text, elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, temp1[0], temp2[0], document.getElementById(elmnt.id+5).style.backgroundColor);
+			// text=""+elmnt.textContent;
+			add_item(temp5[0], elmnt.id, temp5[2], temp5[3], elmnt.offsetWidth, elmnt.offsetHeight, document.getElementById(elmnt.id+5).style.color, temp1[0], temp2[0], document.getElementById(elmnt.id+5).style.backgroundColor);
 			// console.log(gui_items);
 		}
 	}
@@ -638,7 +681,8 @@ function getDivPosition(name)
     var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
     // console.log("Left? : " + x + " ; Top? : " + y + ".");
     // console.log("Left? : " + rect.top);
-    return(rect.top);
+	result=rect.top.toString().split(".")[0];
+    return(parseInt(Number(result)));
 }
 function getDivPosition2(name)
 {
@@ -647,7 +691,8 @@ function getDivPosition2(name)
     var y = document.getElementById(name).clientY - rect.top;  //y position within the element.
     // console.log("Left? : " + x + " ; Top? : " + y + ".");
     // console.log("Left? : " + rect.top);
-    return(rect.left);
+	result=rect.left.toString().split(".")[0];
+    return(parseInt(Number(result)));
 }
 function convert_color_to_hex(color2) {
 	color=color2;

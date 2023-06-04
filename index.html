@@ -97,7 +97,7 @@
             <br />
           </span>
           <a
-            href="https://github.com/duckpvpteam/dtappbuilder"
+            href="https://github.com/4re5Team/dtappbuilder"
             target="_blank"
             rel="noreferrer noopener"
             class="index-link"
@@ -209,7 +209,15 @@ function clickColor(hex, seltop, selleft, html5) {
             </div>
             <div class="index-container10">
               <div class="index-container11">
-			  <h1 style="color: #ffffff" id="dimentions">0x0</h1>
+				<div style="color: white; background: black; width: 60%; height: 100%">
+					<h2 style="color: #16953A; flex-direction: row; display: flex; height: fit-content;"><img style="width: 30px; height: 30px;" src="public/assets/debug.png">DEBUG</h2>
+					<div id="highlight_div" style="color: #f95252; width: 100%; height: 100%; text-align: center;">
+						<span onclick="highlight_all()" style="justify-content: center; display: flex; flex-direction: column; width: fit-content; height: fit-content;"><img id="highlight_img" src="public/assets/highlight.png" style="align-self: center;width: 24px; height: 24px;">highlight all</img></span>
+					</div>
+				</div>
+				<div style="width: 40%; height: 100%">
+					<h1 style="color: #ffffff" id="dimentions">350x200</h1>
+				</div>
 			  </div>
               <div class="index-container12">
 			  <div style="text-align: end;width: 50%;/* height: 100%; */justify-content: center;display: flex;">
@@ -311,7 +319,7 @@ function clickColor(hex, seltop, selleft, html5) {
       </div>
     </div>
 	<script>
-		fetch('https://api.github.com/repos/duckpvpteam/dtappbuilder/contents/templates_list')
+		fetch('https://api.github.com/repos/4re5team/dtappbuilder/contents/templates_list')
 		 .then(response => response.text())
 		 .then(data => {
 			
@@ -348,7 +356,7 @@ function clickColor(hex, seltop, selleft, html5) {
 					xmlHttpReq.send(null);
 					return xmlHttpReq.responseText;
 				}
-				<!-- document.getElementById("help").innerHTML = MarkdownToHtml.parse(httpGet("https://raw.githubusercontent.com/DuckpvpTeam/dtappbuilder/main/README.md")); -->
+				<!-- document.getElementById("help").innerHTML = MarkdownToHtml.parse(httpGet("https://raw.githubusercontent.com/4re5team/dtappbuilder/main/README.md")); -->
 				</script>
 			</div>
 		</div>
