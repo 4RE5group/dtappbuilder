@@ -1,5 +1,10 @@
 var backslash = "\\";
 
+function build_d3m0n(name, width, height, color)
+{
+	
+}
+
 function build_wpf(name, width, height, color)
 {
 	xaml = `
