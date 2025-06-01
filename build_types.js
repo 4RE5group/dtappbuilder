@@ -96,6 +96,27 @@ namespace CSform
         public CSform() {
             DisplayGUI();
         }
+	private Image LoadImageFromUrl(string imageUrl)
+		{
+			try
+			{
+				// Create a web request to get the image
+				WebRequest request = WebRequest.Create(imageUrl);
+
+				// Get the response
+				using (WebResponse response = request.GetResponse())
+				using (Stream responseStream = response.GetResponseStream())
+				{
+					// Load the image from the stream
+					return Image.FromStream(responseStream);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("An error occurred while loading image: " + ex.Message);
+			}
+			return null; // Return null if there was an error
+        }
         private void DisplayGUI() {
 			this.BackColor = Color.FromA`+color+`;
             this.Name = "`+name+`";
@@ -168,7 +189,7 @@ namespace CSform
 }`;
 downloadfile(name+".cs", cscode);
 customAlert.alert(`I've just finnished to build your C# Form window. You can now compile it with:
-C:`+backslash+`Windows`+backslash+`Microsoft.net`+backslash+`Framework64`+backslash+`v3.5`+backslash+`csc.exe `+name+".cs",'Your code is builded!');
+C:`+backslash+`Windows`+backslash+`Microsoft.net`+backslash+`Framework64`+backslash+`v3.5`+backslash+`csc.exe `+name+`.cs & call "`+name+`.exe"`,'Your code is builded!');
 }
 
 
@@ -207,7 +228,7 @@ function getitems(color, type)
 				`+line[2]+`.ForeColor = Color.FromA`+line[6]+`;
 				`+line[2]+`.BackColor = Color.FromA`+line[9]+`;
 				`+line[2]+`.Text = "`+line[3]+`";
-				`+line[2]+`.AutoSize = "true";
+				`+line[2]+`.AutoSize = true;
 				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
 				`+line[2]+`.Location = new Point(`+line[7]+`, `+line[8]+`);
 				`+line[2]+`.FlatStyle = FlatStyle.Flat;`;
@@ -288,7 +309,7 @@ function getitems(color, type)
 				//
 				`+line[2]+` = new `+line[0]+`();
 				`+line[2]+`.Name = "`+line[2]+`";
-				`+line[2]+`.ImageLocation = "`+line[3]+`";
+				`+line[2]+`.Image = LoadImageFromUrl("`+line[3]+`");
 				`+line[2]+`.SizeMode = PictureBoxSizeMode.AutoSize;
 				`+line[2]+`.ClientSize = new Size(`+line[4]+`, `+line[5]+`);
 				`+line[2]+`.Size = new Size(`+line[4]+`, `+line[5]+`);
